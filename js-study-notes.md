@@ -203,3 +203,41 @@
 </body>
 </html>
 ```
+
+#### 数字数据类型
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数字数据类型</title>
+</head>
+<body>
+    <script>
+        NaN：数据类型也是数字
+        alert(Number(123))
+        alert(Math.pow(16,2))  // 16的平方
+        alert(Math.round(16.123)) // 四舍五入
+        alert(Math.ceil(16.123)) // 向上取整
+        alert(Math.floor(16.123)) // 向下取整
+        alert(Math.max(16,11,10,7,8,9,22)) // 取最大值
+        alert(Math.min(16,11,10,7,8,9,22)) // 取最小值
+        alert(Math.random()) // 生成随机数（0-1），不需要添加参数
+        alert(Math.random()*100) // 生成随机数（0-100）
+
+        alert(parseInt("123asf")) //将参数解析成数字（当遇到第一个非数字的值时停止）
+        alert(parseFloat("123.123asf")) //将参数解析成浮点数（当小数点后面的内容遇到第一个非数字的值时停止）
+
+        var n = 4.56336363634
+        alert(n.toFixed(2)) //保留小数点后2位
+        alert(Math.random()*20 + 60)  // 生成60-80的随机数
+        alert("hello! world!".length)  // 字符串长度
+        // 数字没有长度属性
+
+
+    </script>
+</body>
+</html>
+```
+
