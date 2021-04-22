@@ -241,3 +241,92 @@
 </html>
 ```
 
+#### 字符串
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>字符串</title>
+</head>
+<body>
+<script>
+
+    // 类数组
+    var str = "this is string"
+
+    // 获取字符串中第一个字符
+    str[0]
+    str.charAt(0)
+
+    // 查询第1-3个字符，如果起始字符＜终止字符，不影响查询
+    // 不支持负数索引，负数索引表示为0
+    alert(str.substring(0,3))
+
+    // 切片
+    // 支持负数索引，但必须按顺序索引
+    alert(str.slice(0, 5))
+
+    // 查找字符索引
+    alert(str.indexOf('is', 3))
+
+    // 分隔文本，并会返回一个数组
+    alert(str.split('is'))
+
+    str.toUpperCase() // 变为大写
+    str.toLowerCase() // 变为小写
+
+</script>
+</body>
+</html>
+```
+
+#### 布尔值
+
+1. 布尔值：True / False
+2. undefined / null / 0 / -0 / NaN / ""  这5种都会返回False
+
+#### null和undefined
+
+1. null是一个关键字
+2. undefined是一个预先设置好的全局变量
+
+* null == undefined
+* 1+ null = 1
+* 1 + undefined = NaN
+
+#### 数组和onload事件
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数组和onload事件</title>
+    <script>
+        window.onload = function () {
+            var box = document.getElementById("box")
+            alert(box)
+        }
+    </script>
+</head>
+<body>
+    <div id="box"></div>
+    <script>
+
+        // 数组
+        var arr = [1,2,3,4,5123,5123,12,666,10]
+
+        // onload事件
+        // 会等所有标签，图片，js，CSS，文字等内容全部加载完毕，再显示花括号中的代码
+        // window.onload = function() {
+        //
+        // }
+
+
+    </script>
+</body>
+</html>
+```
+
