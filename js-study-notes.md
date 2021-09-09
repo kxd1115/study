@@ -482,3 +482,48 @@
 </html>
 ```
 
+#### if语句
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>流程控制语句</title>
+</head>
+<body>
+<script>
+
+    // 示例
+    if (6<3) {
+        alert(1);
+    } else if (3<1) {
+        alert(2);
+    } else if (0>1) {
+        alert(3);
+    } else {
+        alert("No!!!!");
+    }
+
+    // 一个条件的简写版本
+    if(6>3) alert(1);
+
+    // 三目运算符（当只有一个真条件和一个假条件时的简写版本）
+    3<2 ? alert("3小于2") : alert("3不小于2");
+    /* 判断问号前的内容，为真时执行冒号左侧的内容，为假时执行冒号右侧的内容 */
+
+    //if语句在for循环中的使用
+    for(var i=0; i<5; i++) {
+        if(i==2) {
+            continue; //跳过本次循环
+            // break：终止循环
+        }
+        console.log(i);
+    };
+
+
+</script>
+</body>
+</html>
+```
+
