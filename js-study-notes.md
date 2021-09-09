@@ -330,3 +330,155 @@
 </html>
 ```
 
+#### 运算符
+
+##### 1. 运算符
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>运算符</title>
+</head>
+<body>
+
+<script>
+    /* 求余数 */
+    alert(6%4);
+
+    /* 赋值操作符 */
+    var a = 6;
+    // 给a变量赋值为6
+
+    // - * / % 会强制将参数转换为数字进行计算（+不会）
+
+    a++; // a = a + 1
+    a--; // a = a - 1
+
+    var b = a++; // 先将a的值赋值给b，再自增
+    var c = ++a; // 先自增，再赋值给c
+
+</script>
+
+</body>
+</html>
+```
+
+
+
+##### 2. 逻辑运算符
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>逻辑运算符（与或非）</title>
+</head>
+<body>
+<script>
+        // 判断条件
+        /* == > < >= <= != === */
+
+        //逻辑运算符
+        /*
+        * && 和/与：遇到假条件就自动停止，并返回false；
+        * || 或：只要满足其中一个条件,就会返回；
+        * !  取反：取相反的结果；
+        *  */
+        var a = 6>3 && 7<9;
+        alert(a);
+
+        var b = !false;
+        alert(b);
+
+</script>
+</body>
+</html>
+```
+
+#### 循环
+
+##### 1. do、while循环
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>do,while循环</title>
+</head>
+<body>
+<script>
+
+    var i = 0;
+
+    // 版本1
+    while(i<5) {
+        console.log(i); //控制台日志输出当前i的结果
+        i++; //当i<5时，循环自增
+    }
+
+    // 版本2
+    do {
+        console.log(i);
+        i++;
+    } while(i<5)
+
+</script>
+</body>
+</html>
+```
+
+##### 2. for循环
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>for循环</title>
+</head>
+<body>
+    <ul class="list">
+        <li>123</li>
+        <li>234</li>
+        <li>345</li>
+        <li>456</li>
+        <li>567</li>
+    </ul>
+<script>
+
+    //示例：
+    // for(var i = 0; i<10; i++) {
+    //     console.log(i);
+    // }
+    // alert("finish!")
+	
+    // for循环的常规用法
+    var uls = document.getElementsByClassName("list")[0];
+    var lis = uls.getElementsByTagName("li");
+
+    // 弹出相应标签中的值
+    for (var i=0; i<lis.length; i++) {
+        lis[i].onclick = function() {
+            alert(this.innerHTML);
+        };
+    };
+
+    // 弹出相应标签对应的索引值
+    for (var i=0; i<lis.length; i++) {
+        lis[i].index = i;
+        lis[i].onclick = function() {
+            alert(this.index);
+        };
+    };
+
+
+
+</script>
+</body>
+</html>
+```
+
