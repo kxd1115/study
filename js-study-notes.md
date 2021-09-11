@@ -455,6 +455,8 @@
     //     console.log(i);
     // }
     // alert("finish!")
+    // 当i小于10的时候，就会执行大括号中的内容，然后执行i++
+    // i++表示变量i自动+1
 	
     // for循环的常规用法
     var uls = document.getElementsByClassName("list")[0];
@@ -521,6 +523,147 @@
         console.log(i);
     };
 
+
+</script>
+</body>
+</html>
+```
+
+#### 函数
+
+##### 1. 函数定义，匿名函数及执行
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>function函数定义，匿名函数及执行</title>
+</head>
+<body>
+<script>
+
+    // 匿名函数 —— 函数表达式
+    function fn1() {
+        alert(1);
+    };
+
+    // 及时函数 —— 定义完就执行
+    (function() {alert(1)}());
+    (function() {alert(1)})();
+
+    -function() {alert(2)}();
+    ~function() {alert(3)}();
+    +function() {alert(4)}();
+    !function() {alert(5)}();
+
+    // 函数执行
+
+</script>
+</body>
+</html>
+```
+
+##### 2. 给函数传递参数
+
+	1. 给函数传递形参
+ 	2. 不定参数arguments
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>函数传参</title>
+</head>
+<body>
+<script>
+
+    // 给函数传递参数，其中a和b是函数add的形参
+    function add(a, b) {
+        c = a + b;
+        return c;
+    };
+
+    // 10和20是函数的实参
+    alert(add(10,20));
+
+    // 不定参数（可变参数）：arguments
+    function sum() {
+        var result = 0;
+        for (i=0; i<arguments.length; i++) {
+            result += arguments[i];
+        };
+        return result;
+    };
+
+    alert(sum(1,2,3,4,5,6))
+
+</script>
+</body>
+</html>
+```
+
+###### 说明：
+
+- 匿名函数不能单独出现，需要名字，或者设定为及时函数直接执行
+- 如果函数没有设置返回值，则默认返回`undefind`
+- 用括号`()`包裹起来的函数就是及时函数(立即执行函数)，this指向windows对象
+- 事件驱动函数执行，this指向触发事件的对象
+
+```html
+function fn1() {
+        alert(1);
+    }
+
+    alert(fn1); // 会直接展示函数本身
+    
+    var fn1 = 0; // 函数会被该变量覆盖
+```
+
+##### 3. 局部变量和全局变量
+
+- 定义在函数内部的变量只能被函数本身调用，被称为`局部变量`
+- 定义在函数外的变量，可以被多个函数调用，被称为`全局变量`
+
+```html
+var a = 0;
+    function fn() {
+        alert(a);
+        var b = 3;
+        alert(b);
+    };
+    fn();
+    alert(b)
+```
+
+##### 4. 闭包
+
+- 函数内的变量是静态方式存储，创建之后不会被销毁（即“闭包”）
+- 让程序可以在函数外访问函数内的变量
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闭包</title>
+</head>
+<body>
+<script>
+
+    function fn1() {
+        var a = 0;
+        function fn2() {
+            a++;
+            alert(a);
+        }
+        return fn2; // 将下级函数fn2作为上级函数fn1的返回值返回
+    }
+
+    var f = fn1();
+
+    f();
 
 </script>
 </body>
