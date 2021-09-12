@@ -567,7 +567,7 @@
 ##### 2. 给函数传递参数
 
 	1. 给函数传递形参
- 	2. 不定参数arguments
+	2. 不定参数arguments
 
 ```html
 <!DOCTYPE html>
@@ -670,3 +670,49 @@ var a = 0;
 </html>
 ```
 
+#### 节点属性操作
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>节点属性操作</title>
+</head>
+<body>
+    <img class="img" id="img" src="https://img2.baidu.com/it/u=172397982,3095585162&fm=26&fmt=auto&gp=0.jpg" alt="">
+    <a class="baidu" href="http://www.baidu.com">跳转到百度</a>
+    <input class="in" type="text">
+
+    <script>
+
+        var imgs = document.getElementById("img");
+        var bai = document.getElementsByClassName("baidu")[0];
+        var ins = document.getElementsByClassName("in")[0];
+
+        //修改名称
+        imgs.className = "box";
+        imgs.id = "box2";
+
+        //更改尺寸
+        imgs.width = "200";
+
+        //更改链接
+        bai.href = "http://pick.baidu.com/";
+
+        //实时记录输入信息（监控用户输入内容）
+        ins.onkeyup = function () {
+            console.log(this.value);
+        };
+
+        // 标签属性的修改
+        alert(ins.getAttribute("class"));    // 获取变量ins对应的标签中class属性的值
+        ins.setAttribute("class", "wang");   // 将变量ins对应的input标签中class属性的值修改为wang
+        ins.removeAttribute("class");        // 将class属性从ins对应的input标签中移除
+
+    </script>
+</body>
+</html>
+```
+
+- 修改标签属性的三种方法除了对系统中存在的合法标签属性可以生效(例如`class`, `id`等)，也可以对用户自行设置的标签属性生效(例如`abc`, `xyz`等)
