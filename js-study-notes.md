@@ -762,3 +762,83 @@ var a = 0;
 </html>
 ```
 
+#### 数组操作1
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>详解数组1</title>
+</head>
+<body>
+<script>
+
+    var a1 = [1,2,3,4,5,6,"2", function() {}]; // 数组可以包含任意数据类型
+    var a2 = [,];
+    var a3 = new Array(105); // 当只有一个整数元素时，会创建一个长度为105的数组；
+
+    // ES6
+    var a4 = Array.of(12);   // ES6语法下，创建一个长度为1，元素为12的数组；
+
+    // 判断是否是数组
+    Arrary.isArray(a1);  // 判断是否是数组
+    a2 instanceof Array; // 判断阿是否是数组的实例
+
+    a3.length; // 查询数组长度
+
+    ar4[0];    // 索引
+
+</script>
+</body>
+</html>
+```
+
+#### 数组操作2
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>详解数组2</title>
+</head>
+<body>
+<script>
+
+    var a1 = [1,2,3];
+
+    a1.length = 0; // length可以被赋值，原数组的长度会被改变；
+
+    a1.kang = "xiao"; // 数组对象可以被赋予新的属性
+    alert(a1.kang);
+
+    // 操作数组
+    a1.push(1,2,3,"abc"); //从数组的末尾添加元素，参数可以是任意数据类型
+    alert(a1);
+
+    a1.unshift(111,333); // 从数组的开头添加元素，参数可以是任意数据类型
+    alert(a1);
+
+    a1.pop();   // 删除数组最后一个元素，并将其作为值返回  a1.pop() = "abc"
+    alert(a1);
+
+    a1.shift(); // 删除数组第一个元素，并将其作为值返回 a1.shift() = 111
+    alert(a1);
+
+    a1.splice(2, 0, "new");  // 替换或插入元素
+    //参数1：替换或插入的起始索引位置
+    //参数2：要替换或插入的元素数量
+    //参数3：要替换或插入的元素
+    alert(a1)
+
+    // a1.toString(); //将数组转化为字符串，默认用逗号拼接
+    alert(a1.join("")); //将数组用新的方式拼接起来(用join的参数替代原来的逗号)，并且会产生一个新的字符串
+    alert(typeof a1.join(""));
+    alert(typeof a1);
+
+</script>
+</body>
+</html>
+```
+
