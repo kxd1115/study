@@ -716,3 +716,49 @@ var a = 0;
 ```
 
 - 修改标签属性的三种方法除了对系统中存在的合法标签属性可以生效(例如`class`, `id`等)，也可以对用户自行设置的标签属性生效(例如`abc`, `xyz`等)
+
+##### 最终呈现样式的获取方式
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>最终呈现出来的样式的获取方式</title>
+    <style>
+
+        * {
+            width: 0;
+            height: 0;
+        }
+
+        #box {
+            width: 200px;
+            height: 150px;
+            background: skyblue;
+        }
+
+
+    </style>
+</head>
+<body>
+<div style="width: 300px; height: 180px; background: #F0F8FF" id="box"></div>
+<script>
+
+    var box = document.getElementById("box");
+
+    // alert(getComputedStyle(box).width);             // 显示宽度
+    // alert(getComputedStyle(box).height);            // 显示高度
+    // alert(getComputedStyle(box).backgroundColor);   // 显示背景颜色
+
+    function getstlye(element, attr) {
+        return element.currentStyle ? element.currentStyle[attr] : getComputedStyle(element)[attr];
+    };
+
+    alert(getstlye(box, "backgroundColor"));
+
+</script>
+</body>
+</html>
+```
+
