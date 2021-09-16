@@ -842,3 +842,97 @@ var a = 0;
 </html>
 ```
 
+#### 定时器
+
+##### 1. 延时定时器
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>定时器</title>
+</head>
+<body>
+<script>
+
+    // 延时定时器
+    //方式1
+    setTimeout(fn1, 1000);  //1秒钟后执行函数fn1
+
+    function fn1() {
+        alert(1);
+    }
+
+    //方式2
+    setTimeout(function fn2() {alert(2);}, 2000);
+
+    //方式3
+    setTimeout('fn1()', 3000)
+
+    //清除延时定时器
+    var time2 = setTimeout('alert(11231)', 5000);
+
+    clearTimeout(time2);
+
+</script>
+</body>
+</html>
+```
+
+##### 2. 循环定时器
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>循环定时器</title>
+</head>
+<body>
+<span class="timer"></span>
+<script>
+
+    //循环定时器
+    var in1 = setInterval(fn1, 2000); //每2秒执行一次fn1参数
+
+    function fn1() {
+        alert(2);
+    }
+
+    //清除循环定时器
+    clearInterval(in1);
+
+
+    //自定义方式
+    // var in2 = setInterval(function() {
+    //     var i = 0;
+    //
+    //     if(i>=3) {
+    //         clearInterval(in2);
+    //     } else {
+    //         alert(666);
+    //     }
+    //
+    //     i++;
+    // }, 5000)
+
+    //自动刷新时间
+    var span = document.getElementsByClassName("timer")[0];
+
+    setInterval(
+        function() {
+
+            var date = new Date();
+            var timer = date.getHours() + "时" + date.getMinutes() + "分" + date.getSeconds() + "秒"
+
+            span.innerHTML = timer;
+
+        }, 1000
+    );
+
+</script>
+</body>
+</html>
+```
+
