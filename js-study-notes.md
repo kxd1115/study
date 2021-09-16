@@ -936,3 +936,80 @@ var a = 0;
 </html>
 ```
 
+#### 时间日期
+
+##### 1. 获取时间日期
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>时间日期</title>
+</head>
+<body>
+<span class="timer"></span>
+<script>
+
+    var date = new Date(); //获取目前最新的时间
+
+    // 快速生成时间戳
+    alert(date*1)
+    // date.getTime()
+
+    date.getFullYear(); //获取年
+    date.getMonth();    //获取月,注意：获取的值类似索引，是从0开始的（1月份会返回0）
+    date.getDate();     //获取日
+    date.getHours();    //获取时
+    date.getMinutes();  //获取分
+    date.getSeconds();  //获取秒
+    date.getDay();      //获取星期
+
+    var span = document.getElementsByClassName("timer")[0];
+    setInterval(
+        function() {
+            var date = new Date();
+            var timer = date.getFullYear() + "年" + (date.getMonth()+1) + "月" + date.getDate() + "日" + date.getHours()+"时"+date.getMinutes()+"分"+date.getSeconds()+"秒";
+            span.innerHTML = timer;
+        }, 1000
+    )
+
+
+</script>
+</body>
+</html>
+```
+
+##### 2. 倒计时
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>倒计时</title>
+</head>
+<body>
+<span class="timer"></span>
+<script>
+
+    var span = document.getElementsByClassName("timer")[0]
+    setInterval(
+        function() {
+            var date = new Date(2021, 8, 17, 21, 10, 0);  // 获取倒计时目标时间（特别注意月份）
+            var targetTime = (date - new Date())/1000     // 获取时间gap
+            var ss = parseInt(targetTime%60)              // 获取秒
+            var mm = parseInt((targetTime/60)%60)         // 获取分
+            var hh = parseInt(targetTime/3600)       // 获取时
+
+            var timer = "倒计时："+hh+"小时"+mm+"分钟"+ss+"秒"
+
+            span.innerHTML = timer
+        },1000
+    )
+
+</script>
+</body>
+</html>
+```
+
