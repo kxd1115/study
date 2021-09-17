@@ -1095,12 +1095,14 @@ var a = 0;
         var dateTime = dateT + " " + timeT
         var h2Dom = document.getElementById("timer");
 
-        setInterval(countDown({
-            target: dateTime,
-            success: function(dd,hh,mm,ss) {
-                h2Dom.innerHTML = "距离目标时间还剩"+dd+"天"+hh+"小时"+mm+"分钟"+ss+"秒";
-            }
-        }), 1000);
+        setInterval(function() {
+            countDown({
+                target: dateTime,
+                success: function(dd,hh,mm,ss) {
+                    h2Dom.innerHTML = "距离目标时间还剩"+dd+"天"+hh+"小时"+mm+"分钟"+ss+"秒";
+                }
+            })
+        }, 1000);
 
         function countDown(json) {
             var arr = json.target.split(" ");
@@ -1141,7 +1143,9 @@ var a = 0;
 </html>
 ```
 
-> 本来是准备做一个获取input时间后，实时显示倒计时的；但目前所学无法完成，后期学习更多内容后再完善
+> 1. 本来是准备做一个获取input时间后，实时显示倒计时的；但目前所学无法完成，后期学习更多内容后再完善
+>
+> 2. 进行了检查微调之后，发现可以运行了！
 
 
 
