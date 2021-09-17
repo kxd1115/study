@@ -982,6 +982,8 @@ var a = 0;
 
 ##### 2. 倒计时
 
+- 示例1
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -1012,4 +1014,140 @@ var a = 0;
 </body>
 </html>
 ```
+
+- 示例2
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>倒计时2</title>
+</head>
+<body>
+<script>
+
+    console.log(
+        countDown({
+        target: "2021-9-18 22:30:00",
+    }));
+
+    function countDown(json) {
+        var arr = json.target.split(" ");
+        var dateT = arr[0].split("-");
+        var dateH = arr[1].split(":");
+
+        // 年月日
+        var yearT = dateT[0];
+        var montT = dateT[1]-1;
+        var dayT = dateT[2];
+
+        // 时分秒
+        var hourT = dateH[0] || 0;
+        var minuT = dateH[1] || 0;
+        var secoT = dateH[2] || 0;
+
+        var targetTime = (new Date(yearT, montT, dayT, hourT, minuT, secoT) - new Date())/1000     // 获取时间gap
+        var ss = parseInt(targetTime%60)              // 获取秒
+        var mm = parseInt((targetTime/60)%60)         // 获取分
+        var hh = parseInt(targetTime/3600)       // 获取时
+
+        return "倒计时："+hh+"小时"+mm+"分钟"+ss+"秒"
+
+    }
+
+</script>
+</body>
+</html>
+```
+
+- 示例3
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>倒计时3_小作业</title>
+</head>
+<body>
+<h2>请选择倒计时目标时间</h2>
+<h3>
+    日期: <input id="indate" type="date" value="2021-09-20"
+               max="2021-12-31" min="2021-01-01"
+               onchange="upperCase1(this.id)"/>
+    时间: <input id="intime" type="time" value="23:30:30" onchange="upperCase2(this.id)"/>
+</h3>
+<h1 id="timer"></h1>
+
+<script>
+
+    // 获取日期
+    function upperCase1() {
+        // 获取日期，时间
+        var onInput1 = document.getElementById("indate").value;
+        var dateT = document.getElementById("indate").value = onInput1.toUpperCase();
+
+        var onInput2 = document.getElementById("intime").value;
+        var timeT = document.getElementById("intime").value = onInput2.toUpperCase();
+
+        // 倒计时
+        var dateTime = dateT + " " + timeT
+        var h2Dom = document.getElementById("timer");
+
+        setInterval(countDown({
+            target: dateTime,
+            success: function(dd,hh,mm,ss) {
+                h2Dom.innerHTML = "距离目标时间还剩"+dd+"天"+hh+"小时"+mm+"分钟"+ss+"秒";
+            }
+        }), 1000);
+
+        function countDown(json) {
+            var arr = json.target.split(" ");
+            var dateT = arr[0].split("-");
+            var dateH = arr[1].split(":");
+
+            // 年月日
+            var yearT = dateT[0];
+            var montT = dateT[1]-1;
+            var dayT = dateT[2];
+
+            // 时分秒
+            var hourT = dateH[0] || 0;
+            var minuT = dateH[1] || 0;
+            var secoT = dateH[2] || 0;
+
+            var targetTime = (new Date(yearT, montT, dayT, hourT, minuT, secoT) - new Date())/1000     // 获取时间gap
+            var ss = parseInt(targetTime%60)            // 获取秒
+            var mm = parseInt((targetTime/60)%60)       // 获取分
+            var hh = parseInt((targetTime/3600)%24)     // 获取时
+            var dd = parseInt((targetTime/3600)/24)     // 获取时
+
+            if(json.success && (typeof json.success).toLowerCase() === "function") {
+                json.success(dd,hh,mm,ss);
+            };
+
+            return "倒计时："+dd+"天"+hh+"小时"+mm+"分钟"+ss+"秒"
+
+        }
+
+    };
+
+
+
+</script>
+
+</body>
+</html>
+```
+
+> 本来是准备做一个获取input时间后，实时显示倒计时的；但目前所学无法完成，后期学习更多内容后再完善
+
+
+
+
+
+
+
+
 
