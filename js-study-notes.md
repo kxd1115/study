@@ -1147,7 +1147,39 @@ var a = 0;
 >
 > 2. 进行了检查微调之后，发现可以运行了！
 
+#### JSON
 
+> JSON是一种数据交互格式，以字符串的形式呈现（是一种规范，基本上所有的语言都偶有字符串，可以交互）
+>
+> 和js对象的不同：js对象是js中的一种特殊数据类型，是JSON数据在js中的一种呈现形式
+
+- 两种创建js对象的方法
+
+```js
+// 方式1
+var obj = {
+    "name": "Mr.Z",
+    "age": 18,
+}
+
+// 方式2
+var obj = new Object();
+obj.name = "kang";
+obj.age = 18;
+```
+
+- 将json字符串转换成js对象`JSON.parse()`
+
+```js
+var s = '{"name": "kang", "age": 18}';
+var obj = JSON.parse(s);  // 将json字符串转换成js对象
+```
+
+- 将js对象转换成json字符串`JSON.stringify()`
+
+```js
+var json = JSON.stringify(obj);
+```
 
 
 
