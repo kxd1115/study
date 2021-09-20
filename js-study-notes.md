@@ -1181,9 +1181,154 @@ var obj = JSON.parse(s);  // 将json字符串转换成js对象
 var json = JSON.stringify(obj);
 ```
 
+#### 获取宽高度
+
+##### 1. 获取元素宽高度
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取宽高度</title>
+    <style>
+        * {
+            width: 0;
+            height: 0;
+        }
+
+        #box {
+            width: 150px;
+            height: 50px;
+            background: skyblue;     /*盒子颜色*/
+            border: 20px solid red;  /*外边框，宽度和颜色*/
+            padding: 80px 0;    /*内边距*/
+            overflow: hidden;  /*隐藏超出部分*/
+        }
+
+        body {
+            width: 1000px;
+            height: 2000px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="box">
+        1<br/>
+        1<br/>
+        1<br/>
+        1<br/>
+        1<br/>
+        1<br/>
+        1<br/>
+        1<br/>
+        1<br/>
+    </div>
+    <div id="box1">
+        <div id="box2">
+            <div id="box3">
+
+            </div>
+        </div>
+    </div>
+<script>
+
+    var box = document.getElementById("box");
+    alert(box.clientHeight); //获取高度 padding + height
+    alert(box.offsetHeight); //获取高度 padding + height + border
+    alert(box.scrollHeight); //获取高度 元素总高度
+
+    alert(document.body.scrollHeight); //获取网页的总高度
+    alert(document.body.scrollTop); //获取该网页从上往下滚动的高度
+
+    // 滚动事件：实时获取并在log中显示滚动的高度
+    window.onscroll = function() {
+        console.log(document.documentElement.scrollTop);
+    }
+
+    // 自定义：从某处自动滚动到高度0（原生Js写法，可以进一步封装）
+    document.documentElement.scrollTop = 1500;
+    var timer = setInterval(
+        function () {
+            if (document.documentElement.scrollTop <= 0) {
+                document.documentElement.scrollTop = 0;
+                clearInterval(timer);
+                /*如果挡墙高度≤0，则停止循环定时器*/
+            } else {
+                var doc = document.documentElement.scrollTop;
+                document.documentElement.scrollTop = (doc - 10);
+                /*否则以每毫秒10px的速度向上移动滚动条*/
+            }
+        }, 1000/10
+    )
+
+</script>
+</body>
+</html>
+```
 
 
 
+##### 2. 获取元素到定位父级的宽高度
 
+- 以`offsetLeft`举例
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取宽高度2</title>
+    <style>
+        * {
+            width: 0;
+            height: 0;
+        }
+
+        #box1 {
+            width: 200px;
+            height: 200px;
+            background: red;
+            margin-left: 100px; /*距离左侧边缘100px*/
+            margin-top: 100px;  /*距离顶部边缘100px*/
+        }
+
+        #box2 {
+            width: 120px;
+            height: 120px;
+            background: orange;
+            position: relative;
+            margin-left: 20px;
+        }
+
+        #box3 {
+            width: 40px;
+            height: 40px;
+            background: skyblue;
+            position: relative; /*absolute 绝对定位*/
+            left: 20px;
+            top: 30px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="box1">
+    <div id="box2">
+        <div id="box3">
+
+        </div>
+    </div>
+</div>
+<script>
+    // 获取当前元素到定位父级的距离（左侧或者顶部距离）
+    var box3 = document.getElementById("box3");
+    alert(box3.offsetLeft); // box3距离box2左侧边缘的距离（因为box2使用了相对定位，即使box3不适用定位，也可以定位到距离）
+</script>
+</body>
+</html>
+```
+
+- 只要父级元素有进行定位，那么子级元素就能够使用`offsetLeft`等方法获取到距离该父级元素边框的距离（左侧或者顶部边框）
 
