@@ -1397,3 +1397,78 @@ var json = JSON.stringify(obj);
 </html>
 ```
 
+#### 正则表达式
+
+###### 1.  两种写法
+
+```javascript
+var str = "MrZ";
+
+var reg = /MrZ/;
+var reg1 = new RegExp("Mrz");
+```
+
+###### 2. 转移字符 `\`
+
+> 通过反斜杠`\`进行转移特殊字符`
+>
+> - \n 换行
+> - \r 回车
+> - \t 制表符
+
+###### 3. 元字符 
+
+- `.` 匹配任意一个字符
+
+```javascript
+var str1 = "This is string!";
+var reg = /./;  // 通过`.`匹配str1中的第一个字符
+
+alert(str1.match(reg)); 
+```
+
+- `*` 匹配n次任意一个字符
+
+```javascript
+var str1 = "66666This is string!6";
+var reg = /6*/;  //匹配str1中所有的6，但必须是连续出现的，结尾处的6无法被匹配到
+
+alert(str1.match(reg));
+```
+
+- `+` 至少匹配1次或n次任意一个字符
+
+```javascript
+var str1 = "6This is string!6";
+var reg = /6+/;  //至少匹配一次数字6，当匹配不到时会返回null
+
+alert(str1.match(reg));
+```
+
+- `?` 匹配0次或者一次
+
+```javascript
+var str1 = "This is string!6";
+var reg = /6?This/;  
+
+alert(str1.match(reg));
+```
+
+- `^` 表示匹配从什么地方开始
+
+```javascript
+var str1 = "This is string!6";
+var reg = /^T.*/;   // 必须以T作为开始
+
+alert(str1.match(reg));
+```
+
+
+
+
+
+
+
+
+
+> match函数只能匹配到遇到的第一个正确结果
