@@ -1332,3 +1332,68 @@ var json = JSON.stringify(obj);
 
 - 只要父级元素有进行定位，那么子级元素就能够使用`offsetLeft`等方法获取到距离该父级元素边框的距离（左侧或者顶部边框）
 
+#### 用Js操作节点
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>节点操作</title>
+</head>
+<body>
+    <div id="box2"></div>
+    <div id="box">
+        <p></p>
+        <a href="javascript: void(0);"></a>
+        <span>
+            <b></b>
+        </span>
+    </div>
+    <div id="box1"></div>
+    <script>
+
+        // 获取子元素 Element.children
+        var box = document.getElementById("box");
+
+        alert(box.children);
+        box.children[0].innerHTML = "通过Js将内容添加到p标签";
+
+        box.children[1].innerHTML = "跳转到百度"
+        box.children[1].href = "https://baidu.com"
+
+        box.children[2].children[0].innerHTML = "hello world!"
+
+        // 获取下一个同级元素 nextElementSibling
+        alert(box.nextElementSibling.id);
+
+        // 封装成所有浏览器都支持
+        function getNextElementSibling(element) {
+            if (element.nextElementSibling === null) { return null; }
+            return element.nextElementSibling ? element.nextElementSibling : element.nextSibling;
+        }
+
+        // 获取上一个同级元素
+        alert(box.previousElementSibling.id);
+
+        // 获取父级元素
+        alert(box.parentNode);
+
+        // 删除元素（必须通过父级元素去操作删除）
+        var parent = box.parentNode;
+        parent.removeChild(box); //删除掉Id名为box的子级元素
+
+        // 创建元素 createElement
+        var aDom = document.createElement("a"); //创建一个a标签
+        aDom.href = "https://jd.com";
+        aDom.innerHTML = "跳转到京东"
+
+        parent.appendChild(aDom);  //添加新创建的a标签（只能添加到末尾）
+
+        // 插入元素 将创建的a标签插入到script标签前面（可以将选中的标签添加到选中标签的上方）
+        parent.insertBefore(aDom, document.getElementsByTagName("script")[0]);
+    </script>
+</body>
+</html>
+```
+
