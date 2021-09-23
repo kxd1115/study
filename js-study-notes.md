@@ -1463,12 +1463,74 @@ var reg = /^T.*/;   // 必须以T作为开始
 alert(str1.match(reg));
 ```
 
+- `$` 表示匹配从什么地方结束
 
+```javascript
+var str1 = "This is string!6";
+var reg = /6$/;
 
+alert(str1.match(reg));
+```
 
+- `\s` 匹配任意空格
 
+```javascript
+var str1 = "This is string!6";
+var reg = /\s/g;  // g表示global，意思是全局匹配
 
+alert(str1.match(reg));
+```
 
+- `\S` 匹配所有非空格的内容
 
+```javascript
+var str1 = "This is string!6";
+var reg = /\S/g;  // g表示global，意思是全局匹配
 
-> match函数只能匹配到遇到的第一个正确结果
+alert(str1.match(reg));
+```
+
+- `\d` 匹配0-9的数字
+
+```javascript
+var str1 = "This is string!6";
+var reg = /\d/;
+
+alert(str1.match(reg));
+```
+
+- `\D` 匹配非数字0-9的内容
+
+```javascript
+var str1 = "This45 is string!6";
+var reg = /\D/g;
+
+alert(str1.match(reg));
+```
+
+- `\w` 匹配数字，字母和下划线
+
+```javascript
+var str1 = "This45_is string!6";
+var reg = /\w+/;
+
+alert(str1.match(reg));
+```
+
+- `\W` 匹配非数字，非字母，非下划线内容
+
+```javascript
+ar str1 = "This45_is string!6";
+var reg = /\W+/;
+
+alert(str1.match(reg));
+```
+
+- `\b` 匹配英文单词的边界
+
+```javascript
+var str1 = "This";
+var reg = /is\b/;  // is是单词this的边界，左右边界都可以查询(\bt)
+
+alert(str1.match(reg));
+```
