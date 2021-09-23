@@ -1534,3 +1534,106 @@ var reg = /is\b/;  // is是单词this的边界，左右边界都可以查询(\bt
 
 alert(str1.match(reg));
 ```
+
+###### 4. 标识符
+
+- `g` 表示全局匹配（global）
+
+```javascript
+var str1 = "2342n4l2k34j2l4j2342;jlkj343";
+var reg = /\d+/g;  //将字符串中所有的数字都匹配到
+
+alert(str1.match(reg));
+```
+
+- `i` 忽略大小写（ignore）
+
+```javascript
+var str1 = "2342n4l2K34j2l4j2342;jlkj343";
+var reg = /K+/ig;  //查询所有的k字母，不区分大小写
+
+alert(str1.match(reg));
+```
+
+- `m` 多行匹配
+
+```javascript
+var str1 = "2342n4l234j2\nl4j2342;jlKj343";
+var reg = /K+/m;
+
+alert(str1.match(reg));
+```
+
+###### 5. 量词
+
+- `{n}` 匹配n次某字符 
+
+```javascript
+var str1 = "222342n4l234j2\nl4j2342;jlKj343";
+var reg = /2{2}/g;  //匹配2次数字2
+
+alert(str1.match(reg));
+```
+
+- `{n,m}` 匹配n至m次某字符，m可以不填写（不填写时代表至少匹配n次）
+
+```javascript
+var str1 = "222222222342n4l234j2\nl4j2342;jlKj343";
+var reg = /2{2,4}/g;
+
+alert(str1.match(reg));
+```
+
+###### 6. 贪婪匹配和非贪婪匹配（要有明确的开始和结尾字符）
+
+- `.*` 贪婪匹配（匹配最长的结果）
+- `.*?` 非贪婪匹配（匹配0个或一个符合要求的结果）
+
+```javascript
+var str1 = "<p>aaa</p><p>bbb</p><p>ccc</p><p>ddd</p>";
+var reg = /<p>.*?<\/p>/;
+
+alert(str1.match(reg));
+```
+
+###### 7. 字符集
+
+- `[n-m]` 
+
+1. 匹配n到m的任意数字
+2. 匹配n到m的任意字母
+
+- `[asda]` 也可以匹配到中括号中指定的字符，匹配结果都是单独出现
+
+- `[\u4e00-u9fa5]` 匹配2万个中国汉字
+
+```javascript
+var str1 = "12k12j3io13j12pj中国人pj31p";
+var reg1 = /[1-2]+/g;
+var reg2 = /[a-k]+/g; 
+var reg3 = /[aki]+/g; 
+var reg4 = /[\u4e00-\u9fa5]+/g;
+
+alert(str1.match(reg1));
+```
+
+- `n|m` 匹配n或者m
+
+```javascript
+var str1 = "12k12kj3io13j12pjpj31p";
+var reg = /k+|i+/g;
+
+alert(str1.match(reg));
+```
+
+###### 8. 子集 
+
+- `()` 将括号中的内容视为一个整体，方便进行其他操作
+
+```javascript
+var str1 = "12k12kj3io13j12pj1kiopj31pio";
+var reg = /(io)+/g;  
+var reg = /((1|2)k)+/g; 
+
+alert(str1.match(reg));
+```
