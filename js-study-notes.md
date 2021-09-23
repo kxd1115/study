@@ -1637,3 +1637,40 @@ var reg = /((1|2)k)+/g;
 
 alert(str1.match(reg));
 ```
+
+###### 9. 常用正则匹配
+
+- 匹配邮箱
+
+```javascript
+var email = "kxd18086507240@163.com";
+var reg = /^([A-Za-z]|[1-9])+\w+@\w+\.\w+$/g;
+var reg = /^\w+@\w+\.[a-z]+$/;
+alert(email.match(reg));
+```
+
+- 身份证
+
+```javascript
+var id = "42123119910101121X"
+var reg = /^\d{17}[\dxX]{1}$/;
+alert(id.match(reg));
+```
+
+- 手机号
+
+```javascript
+var tel = "18086507240"
+var reg = /^1{1}[3456789]{1}\d{1}[\s-]?\d{4}[\s-]?\d{4}$/;
+alert(tel.match(reg));
+```
+
+- 密码
+
+```javascript
+var pwd = document.getElementById("pwd")
+var reg = /^[A-z0-9]{1}[\S]{7,15}$/;
+alert(pwd.match(reg));
+```
+
+> 列举了一些常用正则匹配的简单用法
