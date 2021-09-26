@@ -1674,3 +1674,121 @@ alert(pwd.match(reg));
 ```
 
 > 列举了一些常用正则匹配的简单用法
+
+#### replace方法
+
+- 查找替换目标文本
+
+> `replace(a, b)` a: 被替换的文本， b: 需要替换的文本
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>replace</title>
+</head>
+<body>
+    <input type="text" id="str">
+    <script>
+
+        // 直接替换
+        var str1 = "阿东很帅";
+        str2 = str1.replace("很帅", "确实很帅");  //替换文本
+
+        var h2Dom = document.createElement("h2"); //创建新的标签
+        h2Dom.innerHTML = str2;
+
+        document.body.append(h2Dom) //将新的标签添加到body里面
+
+        // 用正则表达式的方式替换（将文本框中输入的脏话替换为*）
+        var in_str = document.getElementById("str");
+        in_str.onkeyup = function() {
+          var ss = str.replace(/傻逼|操你妈|草泥马|操你妈逼|你大爷的|脑瘫/g, function(text) {
+              var tempstr = "";
+              for (var i =0; i<text.length; i++) {
+                  tempstr += "*";
+              };
+          return tempstr;
+          });
+          this.value = ss;
+        };
+
+        // var s1 = "她说：“臭傻逼，上北儿京儿要饭来了，草泥马，操你妈的，”";
+        //
+        // var ss = s1.replace(/傻逼|操你妈|草泥马|操你妈逼|你大爷的|脑瘫/g, function(text) {
+        //     var tempstr = "";
+        //     for (var i =0; i<text.length; i++) {
+        //         tempstr += "*";
+        //     };
+        //
+        //     return tempstr;
+        // });
+        //
+        // console.log(s1,ss);
+        // alert(ss);
+
+    </script>
+
+</body>
+</html>
+```
+
+#### call、apply、bind
+
+> call - fn.call(this,b,c...)
+> this: 指向需要调用的函数名, 将fn的执行对象修改为this
+> b/c...  fn函数的参数
+>
+> apply - fn.apply(this, [a,b,c])
+> this: 需要执行的函数，将fn的执行对象修改为this
+> [a,b,c] fn函数的参数，用数组的形式呈现
+>
+> bind - fn.bind()
+> 创建一个新函数，被动方式执行
+> 参数条用方式和call一致，但bind方法不会主动执行，而是生成为一个新的函数
+> 方便在需要的时候进行调用
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>call、apply、bind</title>
+    <style>
+
+        . {
+            width: 0;
+            height: 0;
+        }
+
+        #box {
+            width: 150px;
+            height: 150px;
+            background: orange;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="box"></div>
+    <script>
+        var box = document.getElementById("box");
+
+        box.onclick = function() {
+            changeCSS.call(box, "background", "red");
+            changeCSS.apply(box, ["border", "10px solid blue"]);
+            changeCSS.bind(box, "border-radius", "50%")();
+        };
+
+        function changeCSS(attr, value) {
+            this.style[attr] = value;
+        }
+
+    </script>
+
+</body>
+</html>
+```
+
