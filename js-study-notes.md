@@ -1757,7 +1757,7 @@ alert(pwd.match(reg));
     <title>call、apply、bind</title>
     <style>
 
-        . {
+        * {
             width: 0;
             height: 0;
         }
@@ -1788,6 +1788,158 @@ alert(pwd.match(reg));
 
     </script>
 
+</body>
+</html>
+```
+
+#### 事件对象`event`
+
+- 常用参数
+
+> clientx、y 当前点在浏览器中的坐标
+>
+> pagex、y 当前点在网页中的坐标
+>
+> button0、1、2 左键、滚轮键、右键
+>
+> which1/2/3 左键、滚轮键、右键
+
+##### 1. 拖拽事件（鼠标拖拽目标时触发的事件）
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件对象event</title>
+    <style>
+        * {
+            width: 0;
+            height: 0;
+        }
+
+        #box {
+            width: 150px;
+            height: 150px;
+            background: orange;
+            position: absolute; //绝对定位
+        }
+
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <script>
+
+        document.onclick = function(event) {
+            console.log(event);
+        }
+
+        // 拖拽事件，鼠标拖拽box
+        var box = document.getElementById("box");
+
+        box.onmousedown = function(e) {
+            e = e || event;
+
+            //获取初始坐标
+            var initX = e.clientX;
+            var initY = e.clientY;
+
+            //获取盒子初始的位置（由于在示例中盒子的父级元素是body，因此直接使用offsetLeft）
+            var initleft = box.offsetLeft;
+            var inittop = box.offsetTop;
+
+            box.onmousemove = function(e) {
+                e = e || event;
+
+                // 获取变化后的坐标
+                var moveX = e.clientX;
+                var moveY = e.clientY;
+
+                // 变化量 = 变化后坐标 - 初始坐标
+                var changeX = moveX - initX;
+                var changeY = moveY - initY;
+
+                // 最终位置 = 初始位置 + 变化量
+                box.style.left = changeX + initleft + "px";
+                box.style.top = changeY + inittop + "px";
+
+            }
+        };
+
+        // 弹起鼠标后，事件停止
+        box.onmouseup = function() {
+            box.onmousemove = function() {};
+        }
+
+    </script>
+</body>
+</html>
+```
+
+##### 2. 阻止冒泡
+
+- 冒泡事件：当多个元素相互嵌套时，某一个子元素触发了一个冒泡事件后，其他嵌套上级直系亲属元素也会触发该事件（自下而上）
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>阻止冒泡</title>
+    <style>
+        * {
+            width: 0;
+            height: 0;
+        }
+
+        .parent {
+            width: 300px;
+            height: 300px;
+            background: orange;
+        }
+
+        #box {
+            width: 150px;
+            height: 150px;
+            background: dodgerblue;
+        }
+
+    </style>
+</head>
+<body>
+<div class="parent">
+    <div id="box"></div>
+</div>
+<script>
+
+    document.onclick = function(event) {
+        console.log(event);
+    }
+
+    //冒泡事件
+    /*当多个元素相互嵌套的时候，一个元素触发了事件，那么其他嵌套中的元素也会触发该事件（自下而上）
+    * 只会触发直系亲属元素*/
+
+    /*阻止冒泡：cancelBubble*/
+    var parent = document.getElementsByClassName("parent")[0];
+    var box = document.getElementById("box");
+
+    box.onmouseover = function(e) {
+        e = e || event;
+        e.cancelBubble = true; //阻止冒泡：阻止冒泡事件的发生，该事件仅在当前元素中发生
+        console.log("我是子元素");
+    };
+
+    parent.onmouseover = function() {
+        console.log("叫爸爸");
+    }
+
+    // 区别：onmouseover触发冒泡事件 onmouseenter不触发冒泡事件
+
+
+
+</script>
 </body>
 </html>
 ```
