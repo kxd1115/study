@@ -1881,6 +1881,8 @@ alert(pwd.match(reg));
 
 - 冒泡事件：当多个元素相互嵌套时，某一个子元素触发了一个冒泡事件后，其他嵌套上级直系亲属元素也会触发该事件（自下而上）
 
+> 用onmouseover(鼠标划入事件)举例
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -1937,9 +1939,116 @@ alert(pwd.match(reg));
 
     // 区别：onmouseover触发冒泡事件 onmouseenter不触发冒泡事件
 
-
-
 </script>
+</body>
+</html>
+```
+
+##### 3. 事件注册和移除
+
+1. 事件注册 addEventListener
+2. 事件移除 removeEventListener
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件注册监听</title>
+</head>
+<body>
+    <button id="bt1">按钮1</button>
+    <button id="bt2">按钮2</button>
+    <p id="p1">为对象注册多个事件</p>
+    <script>
+
+        // 事件注册监听执行事件 document.addEventListener(a,b,c)
+        /*参数说明
+        * a：注册事件的类型名称 mouseover、mouseout等
+        * b：事件需要执行的监听函数
+        * c：布尔值：true → 事件按照捕获的顺序触发，false → 事件按照冒泡顺序触发
+        * */
+        // var btns = document.getElementsByTagName("button");
+        //
+        // var fn1 = function() {
+        //     alert(this.innerHTML)
+        // }
+        //
+        // for (var i in btns) {
+        //     btns[i].addEventListener("click", fn1, true)
+        // }
+        // 为多个对象注册相同的事件处理函数
+
+        var p1 = document.getElementById("p1");
+        var fn1 = function() {
+            this.style.background = 'blue'
+        }
+        var fn2 = function() {
+            this.style.background = 'red'
+        }
+        p1.addEventListener("mouseover", fn1, true);
+        p1.addEventListener("mouseout", fn2, true);
+        // 为一个对象注册多个不同的事件处理函数
+
+        // 移除事件 removeEventListener(a,b,c)
+        /*
+        * a：移除的事件名称
+        * b：需要移除的监听函数
+        * c：布尔值：true → 事件按照捕获的顺序触发，false → 事件按照冒泡顺序触发
+        * */
+        p1.removeEventListener("mouseover", fn1, true)
+
+    </script>
+
+</body>
+</html>
+```
+
+##### 4. 键盘事件(常用)
+
+> keyup 按键弹起时触发
+>
+> keydown 按键按下时触发
+>
+> keypress 按键按下时触发(不识别功能键)
+
+- keyCode > 键盘事件对象，代表按键对应的ASCII值
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>键盘事件</title>
+    <style>
+        * {
+            width: 0;
+            height: 0;
+        }
+
+        #key {
+            width: 300px;
+            height: 10px;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="key" rols="30" cols="20"></textarea>
+    <!--  自定义输入框，需要设置宽高  -->
+    <script>
+
+        // 只有能被输入的元素才能被触发键盘事件
+        var key = document.getElementById("key");
+
+        // 实时获取用户按下按键的ASCII码 onkeyup
+        key.onkeyup = function(e) { //事件调用函数
+            e = e || event; //标准化事件对象
+            var s = e.type + " " + e.keyCode; //捕获事件响应信息
+            // key.value = s;
+            console.log(s)
+        }
+
+    </script>
 </body>
 </html>
 ```
