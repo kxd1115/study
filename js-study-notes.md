@@ -2053,7 +2053,7 @@ alert(pwd.match(reg));
 </html>
 ```
 
-##### 原生JS自定义滚动条(未学完)
+##### 原生JS自定义滚动条(未学完：更新至拖拽滑块浏览内容)
 
 ```html
 <!DOCTYPE html>
@@ -2073,8 +2073,16 @@ alert(pwd.match(reg));
             background: rgba(169,169,169,0.37);
             position: relative;
             overflow: hidden;  /*隐藏超出部分*/
-            margin: 50px auto;
+            margin: 30px auto;
         }
+
+        #content {
+            position: absolute;
+            background: #b7fffd;
+            top: 0;
+            padding: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -2099,14 +2107,28 @@ alert(pwd.match(reg));
             <p>
                 中央电视台综合频道（频道呼号：CCTV-1 简称：央视综合频道或央视一套）是以新闻为主的综合类电视频道，于1978年5月1日开播。<br/>1958年5月1日，北京电视台开始试验播出。1978年5月1日，“北京电视台”正式更名为中央电视台。1993年3月1日，起名为“新闻·综合·时政频道”，1995年4月3日，正式更名为“新闻·综合频道”。2003年5月8日，由“新闻·综合频道”改为“综合频道”。2009年9月28日，开播高清信号，实现高、标清同播。2011年，频道香港版通过亚洲电视15频道播出。2016年，频道（境内版）在澳门落地播出。2017年，香港版（高清版）在香港电台开播。2020年8月，入选2019年度国产动画片优秀播出机构，获奖5万元。
             </p>
+            <h2>结束了！！！</h2>
+
         </div>
         <div></div>
     </div>
     <script>
 
-        var mainBox = document.getElementById("mainBox")
+        var mainBox = document.getElementById("mainBox");
+        var content = document.getElementById("content");
 
-        //添加时间
+        var stopSelect = [];
+        stopSelect.push("-webkit-user-select");
+        stopSelect.push("-moz-user-select");
+        stopSelect.push("-ms-user-select");
+        stopSelect.push("-o-user-select");
+        stopSelect.push("-user-select");
+
+        for (var i=0; i<stopSelect.length; i++) {
+            content.style[stopSelect[i]] = "none";
+        }
+
+        //添加事件
         function addEvent(Element, type, handler) {
             //substing(start,stop)：start参数必填，会返回一个从start处开始的新字符串；该方法不接受负数参数
             if (type.substring(0,2) === "on") type = type.substring(2);
@@ -2144,6 +2166,99 @@ alert(pwd.match(reg));
         };
 
         mouseWheel(mainBox)
+
+        // 获取样式（兼容多种浏览器）
+        function getStyle(Element, attr) {
+            return Element.currentStyle ? Element.currentStyle[attr] : getComputedStyle(Element)[attr]
+        };
+
+        /*创建滚动条*/
+        var track = document.createElement("div");  //创建滚动轴
+        var thumd = document.createElement("div");  //创建滑块
+
+        thumd.className = "thumd";
+
+        mainBox.appendChild(track);  // 将track添加为mainBox的子元素
+        track.appendChild(thumd);    // 将thumd添加为mtrack的子元素
+
+        // 设置滚动条样式
+        thumd.style.cssText = "width: 18px; position: absolute; top: 0; background: #666; border-radius: 9px";
+        track.style.cssText = "width: 18px; position: absolute; top: 0; right: 0; background: #ccc";
+        track.style.height = mainBox.offsetHeight + "px";
+
+        var pad = parseInt(getStyle(content, "padding-left")) + parseInt(getStyle(content, "padding-right"));
+        content.style.width = content.offsetWidth - 18 - pad + "px";
+
+        // 计算滑块高度
+        var thumdLen = (mainBox.clientHeight / content.offsetHeight) * mainBox.offsetHeight;
+        thumd.style.height = thumdLen + "px";
+
+        if (thumdLen >= mainBox.clientHeight) { //如果滑块高度≥显示内容的高度，则不需要滚动条
+            track.style.display = "none";
+            content.style.width = content.offsetWidth + 18 + "px";
+        }
+
+        // 禁止选中文字
+        // 1. 获得焦点时（当上一次鼠标点击时获得焦点）
+        content.onfocus = function() {
+            for (var i=0; i<stopSelect.length; i++) {
+                content.style[stopSelect[i]] = ""
+            };
+        };
+
+        content.setAttribute("tabindex", "1");
+
+        // 失去焦点时（清除文字的选中状态）
+        content.onblur = function() {
+            for (var i=0; i<stopSelect.length; i++) {
+                thumd.style[stopSelect[i]] = track.style[stopSelect[i]] = content.style[stopSelect[i]] = "none";
+            };
+
+            //失去焦点后就清除用户之前选中文字上的选中状态（兼容多种浏览器）
+            window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+        };
+
+        // 拖拽滑块（鼠标点击，鼠标拖拽，鼠标弹起）
+        thumd.onmousedown = function(e) { //鼠标点击
+            e = e || event;
+
+            //获得初始位置
+            var initY = e.clientY;
+
+            //获得盒子初始位置
+            var initTop = thumd.offsetTop;
+
+            //鼠标移动移动拖拽
+            document.onmousemove = function(e) {
+                e = e ||event;
+
+                //获得移动后的位置
+                var moveY = e.clientY;
+
+                //移动距离 = 移动后位置-初始位置
+                var changeY = moveY - initY;
+
+                //最终位置 = 盒子的初始位置 + 移动距离
+                fin_location = initTop + changeY
+
+                //判断边界
+                if (fin_location>mainBox.offsetHeight-thumd.offsetHeight) {
+                    fin_location = track.offsetHeight - thumd.offsetHeight;
+                }
+                if (fin_location<=0) fin_location = 0;
+
+                //获取最终位置
+                thumd.style.top = fin_location + "px";
+
+                //联动内容区域，使滑块移动时，内容同步移动
+                content.style.top = -fin_location*content.offsetHeight/mainBox.offsetHeight + "px";
+            };
+        };
+
+        document.onmouseup = function() { //鼠标弹起
+            document.onmousemove = null;
+        }
+
 
     </script>
 </body>
