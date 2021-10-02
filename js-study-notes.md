@@ -2053,7 +2053,7 @@ alert(pwd.match(reg));
 </html>
 ```
 
-##### 原生JS自定义滚动条
+#### 原生JS自定义滚动条
 
 ```html
 <!DOCTYPE html>
@@ -2311,6 +2311,64 @@ alert(pwd.match(reg));
             content.style.top = -_top*content.offsetHeight/mainBox.offsetHeight + "px";
 
         })
+
+    </script>
+</body>
+</html>
+```
+
+#### 运动框架
+
+##### 1. 简单的运动框架及简单封装
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>运动框架</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #box {
+            width: 150px;
+            height: 150px;
+            background: #ff00cc;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <script>
+
+        var box = document.getElementById("box")
+
+        //简单封装：将运动封装成一个函数，方便调用
+        function getStyle(obj, attr) { //兼容各种浏览器：获取元素属性
+            return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj)[attr];
+        }
+
+        function move(obj, attr, target, speed, callback) { //封装运动函数
+            var now = parseInt(getStyle(obj, attr));
+            var bool = now > target ? !!(speed = -speed) : false;
+
+            var timer = setInterval(function() {
+                now += speed;
+                if (bool ? now<=target : now>=target) {
+                        now = target;
+                        clearInterval(timer);
+                        callback && callback(); //可以添加一个回调函数
+                };
+
+                obj.style[attr] = now + "px";
+
+            }, 1000/50);
+        };
+
+        move(box, "left", 500, 2, function() {move(box, "left", 0, 2)});
 
     </script>
 </body>
