@@ -2053,7 +2053,7 @@ alert(pwd.match(reg));
 </html>
 ```
 
-##### 原生JS自定义滚动条(未学完：更新至拖拽滑块浏览内容)
+##### 原生JS自定义滚动条
 
 ```html
 <!DOCTYPE html>
@@ -2081,6 +2081,7 @@ alert(pwd.match(reg));
             background: #b7fffd;
             top: 0;
             padding: 10px;
+            transition: top 100ms linear;
         }
 
     </style>
@@ -2088,27 +2089,8 @@ alert(pwd.match(reg));
 <body>
     <div id="mainBox">
         <div id="content">
-            <h2>毛丝鼠</h2>
-            <p>
-                短尾毛丝鼠体型较大，体长30～38cm，尾长10cm左右；长尾毛丝鼠体型较小，体长24～28cm，尾长14～15cm。 一般雌鼠体重510～710g，
-                雄鼠体重425～570g。前半身似兔，后半身似鼠，耳大钝圆，尾毛蓬松。眼睛明亮，鼻端两侧有许多长须。标准毛丝鼠皮毛呈蓝灰色，腹部
-                渐淡至白色，腹中部有分界明显的白色带。
-                <br/>该物种群居、性情温顺、昼伏夜出，是原产于南美洲安第斯山脉地区的兔子大小的花栗鼠类动物，以皮毛柔软漂亮而闻名于世，由于受到
-                人类的大肆捕杀而濒临灭绝。
-            </p>
-            <h2>恒大地产集团有限公司</h2>
-            <p>
-                恒大地产集团有限公司（简称恒大地产）于1997年在中国广东省广州市成立，是中国恒大集团的下属控股企业，也是集团的地产业务主体。
-                <br/>恒大集团是集地产、金融、健康、旅游及体育为一体的世界500强企业集团，总资产达万亿，年销售规模超4000亿，员工8万多人，解决就业130多万人，在全国180多个城市拥有地产项目500多个，已成为全球第一房企。
-                <br/>2017年8月1日，恒大集团总部和恒大地产集团、恒大金融集团总部正式入驻深圳办公，而恒大旅游集团、恒大健康集团总部则继续留在广州办公。广州和深圳“双总部”战略正式实施，两个城市的总部员工各三千多人。
-                <br/>2019年7月，发布2019《财富》世界500强：位列138位。2019年8月22日，“中国民营企业500强”发布，恒大排名第5。“一带一路”中国企业100强榜单排名第32位。2019年12月，恒大地产集团有限公司入选2019中国品牌强国盛典榜样100品牌。2019年12月18日，人民日报“中国品牌发展指数”100榜单排名28位。2020年1月4日，获得2020《财经》长青奖“可持续发展效益奖”。2021年6月11日，恒大集团与中国石油化工集团战略合作签约仪式在北京举行。
-            </p>
-            <h2>中央电视台综合频道</h2>
-            <p>
-                中央电视台综合频道（频道呼号：CCTV-1 简称：央视综合频道或央视一套）是以新闻为主的综合类电视频道，于1978年5月1日开播。<br/>1958年5月1日，北京电视台开始试验播出。1978年5月1日，“北京电视台”正式更名为中央电视台。1993年3月1日，起名为“新闻·综合·时政频道”，1995年4月3日，正式更名为“新闻·综合频道”。2003年5月8日，由“新闻·综合频道”改为“综合频道”。2009年9月28日，开播高清信号，实现高、标清同播。2011年，频道香港版通过亚洲电视15频道播出。2016年，频道（境内版）在澳门落地播出。2017年，香港版（高清版）在香港电台开播。2020年8月，入选2019年度国产动画片优秀播出机构，获奖5万元。
-            </p>
             <h2>结束了！！！</h2>
-
+            <p>内容太长不做展示</p>	
         </div>
         <div></div>
     </div>
@@ -2116,6 +2098,9 @@ alert(pwd.match(reg));
 
         var mainBox = document.getElementById("mainBox");
         var content = document.getElementById("content");
+
+        //滑块当前位置
+        var drag = 0;
 
         var stopSelect = [];
         stopSelect.push("-webkit-user-select");
@@ -2138,18 +2123,18 @@ alert(pwd.match(reg));
         // addEvent(document, "click", function() {alert(1)});
 
         //鼠标滚轮事件
-        function mouseWheel(Element, handler) {
+        function mouseWheel(Element, hander) {
 
             // 其他浏览器
             addEvent(Element, "mousewheel", function(e) {
                 var wheel = getWheelData(e);
-                console.log(wheel);
+                hander(wheel);
             });
 
             // 火狐
             addEvent(Element, "DOMMouseScroll", function(e) {
                 var wheel = getWheelData(e);
-                console.log(wheel);
+                hander(wheel);
             });
 
             //获取滚轮方向
@@ -2164,8 +2149,6 @@ alert(pwd.match(reg));
 
 
         };
-
-        mouseWheel(mainBox)
 
         // 获取样式（兼容多种浏览器）
         function getStyle(Element, attr) {
@@ -2182,9 +2165,16 @@ alert(pwd.match(reg));
         track.appendChild(thumd);    // 将thumd添加为mtrack的子元素
 
         // 设置滚动条样式
-        thumd.style.cssText = "width: 18px; position: absolute; top: 0; background: #666; border-radius: 9px";
+        thumd.style.cssText = "width: 18px; position: absolute; top: 0; background: #666; border-radius: 9px; transition: top 100ms linear";
         track.style.cssText = "width: 18px; position: absolute; top: 0; right: 0; background: #ccc";
         track.style.height = mainBox.offsetHeight + "px";
+
+        thumd.onmouseover = function() {
+            thumd.style.background = "rgba(0,0,0,0.7)";
+        };
+        thumd.onmouseout = function() {
+            thumd.style.background = "#666";
+        };
 
         var pad = parseInt(getStyle(content, "padding-left")) + parseInt(getStyle(content, "padding-right"));
         content.style.width = content.offsetWidth - 18 - pad + "px";
@@ -2252,6 +2242,8 @@ alert(pwd.match(reg));
 
                 //联动内容区域，使滑块移动时，内容同步移动
                 content.style.top = -fin_location*content.offsetHeight/mainBox.offsetHeight + "px";
+
+                drag = fin_location
             };
         };
 
@@ -2259,6 +2251,66 @@ alert(pwd.match(reg));
             document.onmousemove = null;
         }
 
+        //鼠标点击滚动轴，滑块跟随跳转
+        track.onmousedown = function(e) {
+            e = e || event;
+
+            //获取内容滚动的高度
+            var contop = content.scrollTop;
+
+            var hide = contop - mainBox.offsetTop;
+
+            var top = e.clientY + hide - thumd.offsetHeight/2;
+
+            //判断边界
+            if (top<=0) top = 0;
+            if (top>=mainBox.offsetHeight-thumd.offsetHeight) {
+              top  = mainBox.offsetHeight-thumd.offsetHeight;
+            };
+
+            var targetElement = e.target || e.srcElement //target表示时间返回时触发的元素是哪一个
+
+            if (targetElement !== thumd) { //让鼠标点击内容跟随事件仅在滚动轴空白区域点击时生效
+                //滑块跳转位置
+                thumd.style.top = top + "px";
+
+                //内容联动，点击滑块并跳转时，内容一并跳转
+                content.style.top = -top*content.offsetHeight/mainBox.offsetHeight + "px";
+
+                drag = top;
+            }
+        };
+
+        //滚动鼠标中键
+        var scrollSign = 0;
+        var _top = 0;
+        mouseWheel(mainBox, function (data) {
+            scrollSign += data;
+
+            if (drag>0) {
+                scrollSign = (drag*12)+data;
+                _top = scrollSign/12;
+                drag = 0
+            } else {
+                _top = scrollSign / 12;
+            }
+
+            //边界判断
+            if (_top <= 0) {
+                _top = 0;
+                scrollSign = 0;
+            };
+            if (_top >= mainBox.offsetHeight-thumd.offsetHeight) {
+                _top = mainBox.offsetHeight-thumd.offsetHeight;
+                scrollSign = (mainBox.offsetHeight-thumd.offsetHeight) * 12
+            };
+
+            thumd.style.top = _top + "px";
+
+            //内容联动
+            content.style.top = -_top*content.offsetHeight/mainBox.offsetHeight + "px";
+
+        })
 
     </script>
 </body>
