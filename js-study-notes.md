@@ -2375,3 +2375,64 @@ alert(pwd.match(reg));
 </html>
 ```
 
+##### 2. 运动框架-时间版本的简单封装
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>运动框架-时间版本封装</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #box {
+            width: 1000px;
+            height: 150px;
+            background: #ff00cc;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div id="box"></div>
+<script>
+
+    var box = document.getElementById("box")
+
+    //简单封装：将运动封装成一个函数，方便调用
+    function getStyle(obj, attr) { //兼容各种浏览器：获取元素属性
+        return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj)[attr];
+    }
+
+    function move(obj, attr, target, time, callback) {//控制框架在N秒之内移动到目标区域
+
+        var initVal = parseInt(getStyle(obj, attr));
+        var initTime = new Date();
+
+        var timer = setInterval(function() {
+            var nowTime = new Date();
+            var gapTime = (nowTime - initTime) / time;
+
+            if (gapTime >= 1) {
+                clearInterval(timer);
+                gapTime = 1;
+                callback && callback();
+            };
+
+            var sx = gapTime * (target-initVal) + initVal;
+
+            obj.style[attr] = sx + "px";
+
+        }, 1000/40);
+    };
+
+    move(box, "width", 100, 5000);
+
+</script>
+</body>
+</html>
+```
+
