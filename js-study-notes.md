@@ -2436,3 +2436,155 @@ alert(pwd.match(reg));
 </html>
 ```
 
+#### 飞机大战练习（未完成）
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小游戏-飞机大战</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-size: 100%;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #wrap {
+            width: 400px;
+            height:600px;
+            background: #666;
+            margin: 20px auto 0;
+            border: 10px solid #ccc;
+            position: relative;
+            text-align: center;
+            user-select: none;
+            font-family: 柳公权柳体, sans-serif;
+        }
+
+        #wrap h1 {
+            font-size: 48px;
+            color: #F0F8FF;
+            padding: 60px 0px;
+        }
+
+        .diff {
+            font-size: 20px;
+            color: #666;
+            width: 140px;
+            height: 50px;
+            background: #fff;
+            line-height: 50px;
+            border-radius: 5px;
+            font-weight:bold;
+            margin: 35px auto 0;
+            cursor: pointer;
+        }
+
+        .diff:hover {
+            background: skyblue;
+            color: #fefff3;
+        }
+
+        .plane {
+            width: 92px;
+            height: 91px;
+            background: url('img/play2.png') 0px 0px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <h1 id="title">飞机大战</h1>
+    </div>
+    <script>
+        window.onload = function() {
+            Game.run();
+        };
+
+        var Game = {
+            //入口函数
+            run: function() {
+                this.init(wrap);
+            },
+
+            // 初始化菜单
+            init: function(elem) {
+                var that = this
+                //创建菜单
+                var ul = document.createElement("ul")
+                for (var i=0; i<4; i++) {
+                    var dis = ["简单模式", "普通模式", "困难模式", "地狱模式"];
+                    var li = document.createElement("li");
+
+                    li.className = "diff";
+                    li.innerHTML = dis[i];
+
+                    ul.appendChild(li);
+
+                    li.onclick = function(e) {
+                        that.plane(elem, e);
+                    }
+
+                };
+                elem.appendChild(ul)
+            },
+
+            plane: function(elem,e) {
+                e = e || event;
+                elem.innerHTML = "" //点击按钮即可开始游戏
+
+                var plane = document.createElement("div");
+                plane.className = "plane";
+
+                plane.style.left = e.pageX - elem.offsetLeft - 10 - 92/2 + "px";
+                plane.style.top = e.pageY - document.body.scrollTop- elem.offsetTop - 10 - 91/2 + "px";
+
+                //判断边界
+                var leftMin = -92/2;
+                var leftMax = elem.clientWidth - 92/2;
+                var topMin = 0;
+                var topMax = elem.clientHeight - 91;
+
+                document.onmouseover = function(e) {
+                    e = e || event;
+
+                    var changeL = e.pageX - elem.offsetLeft - 10 - 92/2;
+                    var changeT = e.pageY + document.body.scrollTop- elem.offsetTop - 10 - 91/2;
+
+                    changeL = Math.min(changeL, leftMax);
+                    changeL = Math.max(changeL, leftMin);
+                    changeT = Math.min(changeT, topMax);
+                    changeT = Math.max(changeT, topMin);
+
+                    plane.style.left = changeL + "px";
+                    plane.style.top = changeT + "px";
+
+                    elem.style.cursor = "none";
+                }
+
+                elem.appendChild(plane);
+            },
+
+            getStyle: function(elem, attr) {
+                return elem.currentElement ? elem.currentElement[attr] : getComputedStyle(elem)[attr];
+            }
+        }
+    </script>
+
+</body>
+</html>
+```
+
