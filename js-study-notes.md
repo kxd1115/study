@@ -2588,3 +2588,158 @@ alert(pwd.match(reg));
 </html>
 ```
 
+#### 学习Ajax
+
+> Ajax主要用来和web服务器交换数据，并异步更新到前端页面（使用Ajax可以做到刷新页面中的部分区域）
+
+- 创建请求
+
+  `var xhr = new XMLHttpRequest()`
+
+- 设置请求
+
+  `xhr.open(method, url, async, user, psw)`
+
+  > method：请求方式（GET、POST）两种
+  >
+  > url：文件地址
+  >
+  > async：是否异步（true/false）
+  >
+  > user/psw：可选参数（用户名和密码）
+
+- 注意
+
+  POST请求下需要设置请求头类型（GET请求下不需要）
+
+  `xhr.setRequestHeader('Content-Type', 'application/x-www-form-urllencoded')`
+
+- 发送请求
+
+  GET: `xhr.send()`  POST: `xhr.send(string)`
+
+  >GET请求下，数据放在url中与web服务器进行交换
+  >
+  >POST请求下，数据放在string中与web服务器进行交换
+
+```javascript
+xhr.onreadystatechange = function() {  
+    if (xhr.readyState == 4) {
+        //readyState：请求的状态(0/1/2/3/4)
+        //0：请求未初始化/1：服务器连接已建立/2：请求已收到/3：正在处理请求/4：请求已完成响应已就绪
+
+        console.log(xhr.responseText); //responseText：字符串格式的响应数据
+    }
+}
+```
+
+> onreadystatechange：定义readystate属性变化时需要执行的函数
+>
+> readystate：发送请求的状态
+>
+> - 0：对象已创建，但未初始化(还没有调用open方法)
+> - 1：对象已载入，还未调用send方法
+> - 2：已调用send方法，请求已发送
+> - 3：已经开始接受数据（部分数据）
+> - 4：接收到全部数据，并将连接关闭（代表数据交换已经完成）
+>
+> responseText：返回的数据（字符串格式）
+>
+> status：返回请求的状态（常用返回值）
+>
+> - 200："OK 请求成功"
+> - 403："Forbidden 请求被禁止"
+> - 404："Not Found 请求未找到"
+
+###### 用Ajax实时请求数据
+
+- 用flask创建一个服务器用于交换数据
+
+```python
+# encoding=utf-8
+
+from flask import Flask, render_template,jsonify, request
+
+app = Flask(__name__)
+
+@app.route('/data', methods=['GET', 'POST'])
+def data():
+    if request.method == 'GET':
+        data = [
+            {
+                "name": "康老师",
+                "male": "man",
+                "marry": False,
+                "age": 26
+            },
+            {
+                "name": "加藤老师",
+                "male": "man",
+                "marry": False,
+                "age": 33
+            },
+            {
+                "name": "波多老师",
+                "male": "woman",
+                "marry": True,
+                "age": 33
+            },
+            {
+                "name": "桥本老师",
+                "male": "woman",
+                "marry": False,
+                "age": 20
+            },
+            {
+                "name": "葵老师",
+                "male": "woman",
+                "marry": False,
+                "age": 28
+            },
+        ]
+        return jsonify(data)
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    return render_template("ajax_3.html")
+
+if __name__ == "__main__":
+    app.debug = True
+    app.run()
+```
+
+- Ajax实时更新
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax_3</title>
+</head>
+<body>
+    <script>
+        var ul = document.createElement("ul");
+        document.body.appendChild(ul);
+
+        var xhr = new XMLHttpRequest();
+        setInterval(xhr.onreadystatechange = function () {
+            if (xhr.readyState==4) {
+                var data = JSON.parse(xhr.responseText);
+                ul.innerHTML = ""
+                for (var i=0; i<data.length; i++) {
+                    var li = document.createElement('li');
+                    li.innerHTML = "name"+": "+data[i].name+" | "+"male"+": "+data[i].male+" | "+"marry"+": "+data[i].marry+" | "+"age"+": "+data[i].age
+                    ul.appendChild(li);
+                }
+            };
+        }, 3000)
+
+        xhr.open('GET', '/data', true);
+        xhr.send();
+
+    </script>
+</body>
+</html>
+```
+
