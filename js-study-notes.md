@@ -2743,3 +2743,174 @@ if __name__ == "__main__":
 </html>
 ```
 
+- Ajax的简单封装
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax封装</title>
+</head>
+<body>
+<script>
+    
+    ajax({
+        method: 'get',
+        url: '/data',
+        data: {
+            age: 18,
+            name: 'test',
+            marry: false,
+            male: 'nani'
+        },
+        success: function(data) {
+            console.log(data);
+        },
+        error: function(code) {
+            console.log(code);
+        }
+    })
+
+    //封装Ajax
+    function ajax(obj) {
+
+        var method = obj.method;
+        var url = obj.url;
+        var data = obj.data;
+        var success = obj.success;
+        var error = obj.error;
+        var send_data = "";
+
+        for (var key in data) {
+            send_data += key + "=" + data[key] + "&";
+        };
+
+        var xhr = new XMLHttpRequest();
+
+        method.toLowerCase()=="GET" ? xhr.open(method, url+"?"+send_data, true) : xhr.open(method, url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        xhr.send(send_data);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState==4) xhr.status==200 ? success(JSON.parse(xhr.responseText)) : error(xhr.status);
+        };
+
+    };
+
+</script>
+</body>
+</html>
+```
+
+> Ajax优点
+
+- 可以做到局部实时刷新页面
+- 异步驱动与后台通信，处理更快，能优化执行效率
+- 按照提交的需求处理数据，大量减少冗余请求，减少对服务器带宽的要求
+- 使用方便
+
+> Ajax缺点
+
+- 不支持跨域（只能识别当前服务器的请求）
+- 不利于SEO优化
+- 破坏了程序的异常机制（当遇到 错误码，后面的代码会继续执行）
+- 调试Ajax代码（不方便，调试很麻烦）
+
+##### JSONP
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsonp</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0; /*输入框点击时的边框加粗效果隐藏*/
+        }
+
+        #wrap {
+            width: 500px;
+            height: 100px;
+            margin: 100px auto 0 ;
+        }
+
+        #search {
+            border: 1px solid #666666;
+            width: 478px;
+            height: 38px;
+            padding: 5px 10px;
+            margin: 30px auto 0 ;
+            font-size: 20px;
+        }
+
+        li {
+            list-style: none; /*无序标签前默认的黑色圆点删除掉*/
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;  /*取消默认下划线*/
+        }
+
+        #list {
+            border: 1px solid #e5e5e5; /*边框线宽度，粗细和颜色*/
+            border-top: none; /*取消显示上边框*/
+        }
+
+        #list li a {
+            font-size: 18px;
+            display: block ;
+            /*
+            display属性可以规定元素生成的框的类型，block表示该元素将显示为块级元素
+            块级元素独占一行
+            */
+            width: 478px;
+            padding: 5px 10px;
+        }
+
+        #list li a:hover {/*鼠标选中时*/
+            background: rgb(51,153,255); /*背景颜色变化*/
+            color: #ffffff; /*字体颜色变化*/
+        }
+
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <input id="search" type="text">
+        <ul id="list">
+<!--            <li><a href="javascript: void(0)">11</a></li>-->
+<!--            <li><a href="javascript: void(0)">11</a></li>-->
+<!--            <li><a href="javascript: void(0)">11</a></li>-->
+        </ul>
+    </div>
+    <script>
+
+        var search = document.getElementById("search");
+        var list = document.getElementById("list");
+
+        //利用jsonp实现跨服务器数据引用
+        search.onkeyup = function() {
+            var val = this.value;
+
+            var jsonp = document.createElement("script")
+            jsonp.src = "https://suggest.taobao.com/sug?code=utf-8&q="+val+"&callback=yoonasy";
+            document.body.appendChild(jsonp);
+            document.body.removeChild(jsonp);
+        };
+
+        function yoonasy(obj) {
+            list.innerHTML = "";
+            for (var i=0; i<obj.result.length; i++) {
+                list.innerHTML += "<li><a target='_blank' href='https://s.taobao.com/search?q="+obj.result[i][0]+"'>"+obj.result[i][0]+"</a></li>";
+            };
+        } ;
+
+    </script>
+</body>
+</html>
+```
+
