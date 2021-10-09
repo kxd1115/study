@@ -2914,3 +2914,200 @@ if __name__ == "__main__":
 </html>
 ```
 
+#### JS轮播图
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            border: 0;
+            vertical-align: baseline;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        li {
+             list-style: none;
+         }
+
+        #wrap {
+            margin: 20px auto 0;
+            width: 880px;
+            height: 387px;
+            position: relative;
+            overflow: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        #imgs a {
+            position: absolute;
+            display: none;
+        }
+
+        .previous, .next {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            top: 50%;
+            margin-top: -25px;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .previous {
+            left: 8px;
+        }
+
+        .next {
+            right: 8px;
+        }
+
+        #btn {
+            overflow: hidden;
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            margin-left: 300px;
+        }
+
+        #btn li {
+            float: left;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #00bfff;
+            border-radius: 50%;
+            background-color: #fff;
+            cursor: pointer;
+            margin: 0px 5px;
+            text-align: center;
+        }
+
+        #btn li.on {
+            background-color: rgb(0,191,255);
+            border: 2px solid #fff;
+        }
+
+    </style>
+</head>
+<body>
+<div id="wrap">
+    <div id="imgs">
+        <a href="javascript: void(0);"><img src="banner/img1.jpg" alt="" width="880" height="387"></a>
+        <a href="javascript: void(0);"><img src="banner/img2.jpg" alt="" width="880" height="387"></a>
+        <a href="javascript: void(0);"><img src="banner/img3.jpg" alt="" width="880" height="387"></a>
+        <a href="javascript: void(0);"><img src="banner/img4.jpg" alt="" width="880" height="387"></a>
+        <a href="javascript: void(0);"><img src="banner/img5.jpg" alt="" width="880" height="387"></a>
+    </div>
+    <div id="paging">
+        <span class="previous"><img src="banner/left.png" alt="" width="50" height="50"></span>
+        <span class="next"><img src="banner/right.png" alt="" width="50" height="50"></span>
+    </div>
+    <ul id="btn">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<script>
+    var wrap = document.getElementById("wrap");
+    var paging = document.getElementById("paging").getElementsByTagName("span")
+    var img = document.getElementById("imgs").getElementsByTagName("a");
+    var btn = document.getElementById("btn").getElementsByTagName("li");
+
+    var timer = 0;
+    var index = 0;
+
+    btn[0].className = "on";
+    img[0].style.display = "block";
+
+    //鼠标点击圆点时，跳转轮播图
+    for (var i=0; i<btn.length; i++) {
+        btn[i].index = i;
+        btn[i].onclick = function () {
+            var that = this;
+            checkout(function () {
+                index = that.index;
+            })
+        };
+
+        //禁止拖拽事件
+        img[i].ondrag = img[i].onmousedown = function(e) {
+            e = e || event;
+            e.preventDefault ? e.preventDefault() : window.event.returnValue = false;
+        }
+
+    };
+
+    //鼠标点击左右两侧箭头
+    for (var i=0; i<paging.length; i++) {
+        //下一页
+        if (i) {
+            paging[i].onclick = function() {
+                checkout(function() {
+                    index++;
+                    index = index%img.length;
+                });
+            }
+        } else {
+            //上一页
+            paging[i].onclick = function() {
+                checkout(function() {
+                    index--;
+                    if (index<0) index=img.length-1;
+                });
+            }
+        }
+    };
+
+    function checkout(callback) {
+        btn[index].className = "";
+        img[index].style.display = "none";
+        callback && callback();
+        btn[index].className = "on";
+        img[index].style.display = "block";
+    }
+
+    //封装循环定时器
+    function cycle() {
+        return setInterval(function() {
+            checkout(function () {
+                index++;
+                if (index>4) index=0;
+            })
+        }, 1000);
+    }
+
+    //运行自动轮播
+    timer = cycle();
+
+    //鼠标划入时停止轮播
+    wrap.onmouseover = function () {
+        clearInterval(timer);
+    };
+
+    //鼠标划出时停止轮播
+    wrap.onmouseout = function () {
+        timer = cycle();
+    }
+
+</script>
+</body>
+</html>
+```
+
