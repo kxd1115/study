@@ -3111,3 +3111,54 @@ if __name__ == "__main__":
 </html>
 ```
 
+#### 面向对象（可复用性高，可扩展性高）
+
+##### 1. 构造函数
+
+- `new Object()`
+
+> new一个构造函数
+>
+> 1. 函数内部会创建一个新的对象
+> 2. 函数内部的this会指向这个对象
+> 3. 函数默认的返回值就是这个对象
+
+```javascript
+//示例1：
+//创建一个空函数（此时函数默认返回undefined）
+function fn() {}
+//new这个空函数（此时函数默认返回对象变为一个新的空对象）
+new fn()
+```
+
+##### 2. prototype原型
+
+> 只有构造函数有prototype原型
+>
+> 1. 构造函数使用prototype创建的方法是一个公用方法，调用该构造函数的子对象都可以使用该方法
+> 2. 私有方法只有创建它的子对象才可以使用
+
+```javascript
+//示例2：
+CreatePerson.prototype.showName = function() {
+	alert(this.name);
+};
+
+//子对象
+var obj1 = new CreatePerson("Mr M");
+var obj2 = new CreatePerson("Mr Z");
+var obj3 = new CreatePerson("Mr J");
+
+obj1.showName();
+obj2.showName();
+obj3.showName();
+
+//子对象创建一个私有方法，只有obj1可以调用
+obj1.marry = function () {
+	alert(123);
+}
+obj1.marry();
+```
+
+
+
