@@ -3154,16 +3154,15 @@ console.log(person2.constructor === Fn);
 >
 > 每个通过构造函数创建的实例都会自带一个constructor属性，这个属性指向该构造函数Fn
 
-##### 2. 原型对象prototype
+##### 2. 原型对象prototype，原型链
 
 > 只有函数对象才有prototype原型对象
 >
 > 1. 构造函数使用prototype创建的方法是一个公用方法，调用该构造函数的实例都可以使用该方法
 > 2. 私有方法只有创建它的实例才可以使用
 > 3. 所有的原型对象都会自动获得一个`constructor`属性，指向该原型对象`prototype`所在的函数
-> 4. 原型对象本身就是创造它的构造函数的一个实例（CreatePerson.prototype是CreatePerson的）
+> 4. 原型对象本身就是创造它的构造函数的一个实例（CreatePerson.prototype是CreatePerson的实例）
 >
-> 注意：所有对象在创建时都有`__proto__`属性（普通对象和函数对象都有）
 
 ```javascript
 //示例2：
@@ -3178,6 +3177,8 @@ var obj1 = new CreatePerson("Mr M");
 var obj2 = new CreatePerson("Mr Z");
 var obj3 = new CreatePerson("Mr J");
 
+obj1.__proto__ === CreatePerson.prototype //true
+
 obj1.showName();
 obj2.showName();
 obj3.showName();
@@ -3188,6 +3189,29 @@ obj1.marry = function () {
 }
 obj1.marry();
 ```
+
+> 原型链补充
+>
+> - 所有对象在创建时都有`__proto__`属性（普通对象和函数对象都有）
+> - 创建对象时自带的`__proto__`指向创建它的构造函数的原型对象，也就是`obj1.__proto__ === CreatePerson.prototype`
+> - `CreatePerson.prototype`是一个普通对象而不是一个函数对象
+
+![image-20211012223432653](C:\Users\kxd18\AppData\Roaming\Typora\typora-user-images\image-20211012223432653.png)
+
+> `person1.___proto__ == Person.prototype`
+>
+> `Person.__proto__ == Function.prototype`
+>
+> `Person.prototype.__proto__ == Object.prototype`
+>
+> `Object.__proto__ == Function.prototype`
+>
+> `Object.prototype.__proto__ == null`
+>
+> - `__proto__`是指向构造函数的原型对象
+> - 普通对象的构造函数是Object
+> - 函数对象的构造函数是Function
+> - null处于原型链的顶端
 
 ##### 3. 用面向对象重写banne作业
 
