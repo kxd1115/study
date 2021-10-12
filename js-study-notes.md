@@ -3113,30 +3113,57 @@ if __name__ == "__main__":
 
 #### 面向对象（可复用性高，可扩展性高）
 
+> JS中万物皆对象，分为`普通对象`和`函数对象`
+>
+> - Object，Function是JS中自带的函数对象
+
 ##### 1. 构造函数
 
 - `new Object()`
+- 通过new创建一个构造函数
 
-> new一个构造函数
+> 函数内部会创建一个新的对象
 >
-> 1. 函数内部会创建一个新的对象
-> 2. 函数内部的this会指向这个对象
-> 3. 函数默认的返回值就是这个对象
+> 函数内部的this会指向这个对象
+>
+> 函数默认的返回值就是这个对象
+>
+> 构造函数本身就是一个函数对象
 
 ```javascript
 //示例1：
 //创建一个空函数（此时函数默认返回undefined）
-function fn() {}
+function Fn() {}
 //new这个空函数（此时函数默认返回对象变为一个新的空对象）
-new fn()
+new Fn()
+
+
+function Fn(name, age) {
+    this.name = name;
+    this.age = age;
+};
+
+var person1 = new Fn("Kang", 26);
+var person2 = new Fn("Ma", 24);
+
+console.log(person1.constructor === Fn);
+console.log(person2.constructor === Fn);
 ```
 
-##### 2. prototype原型
-
-> 只有构造函数有prototype原型
+> person1和person2是构造函数Fn的实例
 >
-> 1. 构造函数使用prototype创建的方法是一个公用方法，调用该构造函数的子对象都可以使用该方法
-> 2. 私有方法只有创建它的子对象才可以使用
+> 每个通过构造函数创建的实例都会自带一个constructor属性，这个属性指向该构造函数Fn
+
+##### 2. 原型对象prototype
+
+> 只有函数对象才有prototype原型对象
+>
+> 1. 构造函数使用prototype创建的方法是一个公用方法，调用该构造函数的实例都可以使用该方法
+> 2. 私有方法只有创建它的实例才可以使用
+> 3. 所有的原型对象都会自动获得一个`constructor`属性，指向该原型对象`prototype`所在的函数
+> 4. 原型对象本身就是创造它的构造函数的一个实例（CreatePerson.prototype是CreatePerson的）
+>
+> 注意：所有对象在创建时都有`__proto__`属性（普通对象和函数对象都有）
 
 ```javascript
 //示例2：
@@ -3144,7 +3171,9 @@ CreatePerson.prototype.showName = function() {
 	alert(this.name);
 };
 
-//子对象
+CreatePerson.prototype.constructor === CreatePerson //true
+
+//实例
 var obj1 = new CreatePerson("Mr M");
 var obj2 = new CreatePerson("Mr Z");
 var obj3 = new CreatePerson("Mr J");
@@ -3153,12 +3182,360 @@ obj1.showName();
 obj2.showName();
 obj3.showName();
 
-//子对象创建一个私有方法，只有obj1可以调用
+//实例创建一个私有方法，只有obj1可以调用
 obj1.marry = function () {
 	alert(123);
 }
 obj1.marry();
 ```
 
+##### 3. 用面向对象重写banne作业
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>banner封装</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            border: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        a {
+            color: #333333;
+            text-decoration: none;
+        }
+
+        #wrap {
+            height: 387px;
+            width: 880px;
+            position: relative;
+            margin: 60px auto 0;
+            overflow: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        #imgs a{
+            position: absolute;
+            display: none;
+        }
+
+        #left, #right {
+            position: absolute;
+            top: 50%;
+            margin-top: -25px;
+            cursor: pointer;
+        }
+
+        #paging span{
+            position: absolute;
+            display: block;
+        }
+
+        #left {
+            left: 5px;
+        }
+        #right {
+            right: 5px;
+        }
+
+        #btn {
+            position: absolute;
+            overflow: hidden;
+            left: 50%;
+            bottom: 16px;
+            margin-left: 280px;
+        }
+
+        #btn li {
+            float: left;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #00dfff;
+            margin: 0 2px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        #btn li.on {
+            background-color: #00dfff;
+            border: 2px solid white;
+        }
+
+    </style>
+</head>
+<body>
+<div id="wrap">
+    <div id="imgs">
+        <a href="javascript: void(0);"><img src="banner/img1.jpg" alt="" width="880" height="387"></a>
+        <a href="javascript: void(0);"><img src="banner/img2.jpg" alt="" width="880" height="387"></a>
+        <a href="javascript: void(0);"><img src="banner/img3.jpg" alt="" width="880" height="387"></a>
+        <a href="javascript: void(0);"><img src="banner/img4.jpg" alt="" width="880" height="387"></a>
+        <a href="javascript: void(0);"><img src="banner/img5.jpg" alt="" width="880" height="387"></a>
+    </div>
+    <div id="paging">
+        <span id="left" ><img src="banner/left.png" alt="" width="50" height="50"></span>
+        <span id="right" ><img src="banner/right.png" alt="" width="50" height="50"></span>
+    </div>
+    <ul id="btn">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<script>
+
+    var wrap = document.getElementById("wrap");
+    var imgs = document.getElementById("imgs").getElementsByTagName("a");
+    var paging = document.getElementById("paging").getElementsByTagName("span");
+    var btn = document.getElementById("btn").getElementsByTagName("li");
+
+    //构造函数
+    function Banner(wrap, imgs, paging, btn) {
+        this.wrap = wrap;
+        this.imgs = imgs;
+        this.paging = paging;
+        this.btn = btn;
+        this.timer = 0;
+        this.index = 0;
+        this.init();
+        this.on_click();
+        this.on_pag();
+        this.on_hover();
+        this.cycle();
+    };
+
+    //添加原型方法
+    Banner.prototype = {
+        init: function() {
+            this.paging[0].style.display = this.paging[1].style.display = "none";
+            this.imgs[this.index].style.display = "block";
+            this.btn[this.index].className = "on";
+        },
+        //封窗重复方法
+        checkout: function checkout(callback) {
+            this.imgs[this.index].style.display = "none";
+            this.btn[this.index].className = "";
+            callback && callback();
+            this.imgs[this.index].style.display = "block";
+            this.btn[this.index].className = "on";
+        },
+        //点击事件
+        on_click: function () {
+            var This = this
+            for (var i=0; i<This.btn.length; i++) {
+                This.btn[i].index = i;
+                This.btn[i].onclick = function () {
+                    var that = this;
+                    This.checkout(function () {
+                        This.index = that.index;
+                    })
+                };
+
+                //禁止拖拽事件
+                This.imgs[i].ondrag = This.imgs[i].onmousedown = function(e) {
+                    e = e || event;
+                    e.preventDefault ? e.preventDefault() : window.event.returnValue = false;
+                };
+            };
+        },
+        //点击左右两侧三角按钮
+        on_pag: function() {
+            var This = this;
+            for (var i=0; i<This.paging.length; i++) {
+                This.paging[i].index = i;
+                This.paging[i].onclick = function() {
+                    that = this;
+                    This.checkout(function () {
+                        if (that.index) {
+                            This.index++;
+                            This.index= This.index%This.imgs.length;
+                        } else {
+                            This.index--;
+                            if (This.index < 0) This.index = This.imgs.length - 1;
+                        };
+                    });
+                };
+            };
+        },
+        //鼠标划入划出事件
+        on_hover: function() {
+            var This = this;
+            This.wrap.onmouseover = function() {//划入
+                This.paging[0].style.display = This.paging[1].style.display = "block";
+                clearInterval(This.timer);
+            };
+            This.wrap.onmouseout = function() {//划出
+                This.paging[0].style.display = This.paging[1].style.display = "none";
+                This.cycle();
+            };
+        },
+        //自动轮播
+        cycle: function () {//循环定时器，轮播图片
+            var This = this;
+            This.timer = setInterval(function () {
+                This.checkout(function () {
+                    This.index++;
+                    if (This.index>4) This.index=0;
+                });
+            }, 1000)
+        },
+        constructor: Banner
+    }
+
+    //
+    new Banner(wrap, imgs, paging, btn);
+
+</script>
+</body>
+</html>
+```
+
+##### 4. 方法链
+
+- 通过在每个原型方法后面添加返回`return this`实现
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>方法链</title>
+</head>
+<body>
+<script>
+
+    function Name(name, age) {
+        this.name = name;
+        this.age = age;
+    };
+
+    Name.prototype = {
+        showName: function() {
+            console.log(this.name);
+            return this;
+        },
+        showAge: function() {
+            console.log(this.age);
+            return this;
+        }
+    };
+
+    var obj1 = new Name("kang", 18);
+    // obj1.showAge();
+    // obj1.showName();
+
+    //使用方法链：可以同时调用多个方法（需要在每个原型方法后面添加return this）
+    obj1.showName().showAge()
+
+</script>
+</body>
+</html>
+```
+
+- `with`方法(优点：能优化代码，使代码非常简洁；缺点：with方法会导致代码执行速度大大下降，性能比较差)
+
+```javascript
+with(obj) {
+	showName();
+	showAge();
+} 
+```
+
+##### 5. 包装对象
+
+- JS原生对象`String`/`Number`/`Boolean`可以用来创建对应类型的数据；也可以把原始类型的值变成（包装成）对象
+
+```javascript
+var str = new String("123");
+var nub = new Number("123");
+var boo = new Boolean(123);
+
+console.log(typeof str); //object
+console.log(typeof nub); //object
+console.log(typeof boo); //object
+
+//使用new方法后，对应的值变成了对象
+```
+
+- 依然可以使用从`Object`继承的原型方法
+
+```javascript
+//valueOf() 返回数值的原型
+console.log(new String("123").valueOf());  //"123"
+console.log(new Number("123").valueOf());  //"123"
+console.log(new Boolean("123").valueOf()); //"123"
+
+//toString() 返回字符串
+console.log(new String("123").toString());  //"123"
+console.log(new Number("123").toString());  //"123"
+console.log(new Boolean("123").toString()); //"123"
+```
+
+- 创建这一定义方法
+
+```javascript
+String.prototype.double = function() {
+	return this.valueOf() + this.valueOf();
+}
+
+console.log("abc".double());
+console.log(new String("123").double());
+```
+
+> 说明：想要为`String`/`Number`/`Boolean`创建方法，只能在原型对象`prototype`后面定义
+>
+> ```javascript
+> var h = "hello";
+> h.name = "K";
+> console.log(h.name) //返回undefined
+> //无法直接创建，包装对象在调用该name属性时，会创建一个临时属性，调用完成后会直接销毁掉这个临时属性
+> ```
+
+##### 6. 关于对象引用
+
+```javascript
+var a = 5;
+var b = 5;
+console.log(a === b); //true
+
+var a1 = [1,2,3,4];
+var a2 = [1,2,3,4];
+console.log(a1 === a2); //false
+
+//在js中，基本类型的变量(字符串，数字，布尔值)在赋值的时候，a和b都指向实际的值5
+//a1和a2都是数组对象，指向的是不同的内存地址，比较(===)的是内存地址因此不相等
+
+c = 5;
+d = c;
+d += 5;
+console.log(c); // 5
+console.log(d); // 10
+//仅仅是将c的值5赋给了d，对d的操作不影响c的值
+
+var a3 = [3,3,3,3];
+var a4 = a3;
+
+a4.push(5);
+console.log(a3,a4); //由于指向同一个内存地址，对a4进行操作时，会改变a3的值
+
+a4 = [33,22]
+console.log(a3,a4); //对a4进行的新的赋值操作，代表重新赋值了一个新的对象给a4；a3和a4不再指向同一个地址
+```
 
