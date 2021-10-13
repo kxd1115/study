@@ -3162,6 +3162,7 @@ console.log(person2.constructor === Fn);
 > 2. 私有方法只有创建它的实例才可以使用
 > 3. 所有的原型对象都会自动获得一个`constructor`属性，指向该原型对象`prototype`所在的函数
 > 4. 原型对象本身就是创造它的构造函数的一个实例（CreatePerson.prototype是CreatePerson的实例）
+> 5. 构造函数的原型对象是一个普通对象
 >
 
 ```javascript
@@ -3196,8 +3197,6 @@ obj1.marry();
 > - 创建对象时自带的`__proto__`指向创建它的构造函数的原型对象，也就是`obj1.__proto__ === CreatePerson.prototype`
 > - `CreatePerson.prototype`是一个普通对象而不是一个函数对象
 
-![image-20211012223432653](C:\Users\kxd18\AppData\Roaming\Typora\typora-user-images\image-20211012223432653.png)
-
 > `person1.___proto__ == Person.prototype`
 >
 > `Person.__proto__ == Function.prototype`
@@ -3208,230 +3207,13 @@ obj1.marry();
 >
 > `Object.prototype.__proto__ == null`
 >
-> - `__proto__`是指向构造函数的原型对象
 > - 普通对象的构造函数是Object
+> - 所有普通对象的`__proto__`都指向`Object.prototype`
 > - 函数对象的构造函数是Function
-> - null处于原型链的顶端
+> - 所有函数对象的`__proto__`都指向`Function.prototype（这是一个空函数 Empty Function）`
+> - `Object.prototype.__proto__`指向null，处于原型链的顶端
 
-##### 3. 用面向对象重写banne作业
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>banner封装</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            outline: none;
-            border: 0;
-        }
-
-        li {
-            list-style: none;
-        }
-
-        a {
-            color: #333333;
-            text-decoration: none;
-        }
-
-        #wrap {
-            height: 387px;
-            width: 880px;
-            position: relative;
-            margin: 60px auto 0;
-            overflow: hidden;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -o-user-select: none;
-            user-select: none;
-        }
-
-        #imgs a{
-            position: absolute;
-            display: none;
-        }
-
-        #left, #right {
-            position: absolute;
-            top: 50%;
-            margin-top: -25px;
-            cursor: pointer;
-        }
-
-        #paging span{
-            position: absolute;
-            display: block;
-        }
-
-        #left {
-            left: 5px;
-        }
-        #right {
-            right: 5px;
-        }
-
-        #btn {
-            position: absolute;
-            overflow: hidden;
-            left: 50%;
-            bottom: 16px;
-            margin-left: 280px;
-        }
-
-        #btn li {
-            float: left;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background-color: white;
-            border: 2px solid #00dfff;
-            margin: 0 2px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        #btn li.on {
-            background-color: #00dfff;
-            border: 2px solid white;
-        }
-
-    </style>
-</head>
-<body>
-<div id="wrap">
-    <div id="imgs">
-        <a href="javascript: void(0);"><img src="banner/img1.jpg" alt="" width="880" height="387"></a>
-        <a href="javascript: void(0);"><img src="banner/img2.jpg" alt="" width="880" height="387"></a>
-        <a href="javascript: void(0);"><img src="banner/img3.jpg" alt="" width="880" height="387"></a>
-        <a href="javascript: void(0);"><img src="banner/img4.jpg" alt="" width="880" height="387"></a>
-        <a href="javascript: void(0);"><img src="banner/img5.jpg" alt="" width="880" height="387"></a>
-    </div>
-    <div id="paging">
-        <span id="left" ><img src="banner/left.png" alt="" width="50" height="50"></span>
-        <span id="right" ><img src="banner/right.png" alt="" width="50" height="50"></span>
-    </div>
-    <ul id="btn">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
-</div>
-<script>
-
-    var wrap = document.getElementById("wrap");
-    var imgs = document.getElementById("imgs").getElementsByTagName("a");
-    var paging = document.getElementById("paging").getElementsByTagName("span");
-    var btn = document.getElementById("btn").getElementsByTagName("li");
-
-    //构造函数
-    function Banner(wrap, imgs, paging, btn) {
-        this.wrap = wrap;
-        this.imgs = imgs;
-        this.paging = paging;
-        this.btn = btn;
-        this.timer = 0;
-        this.index = 0;
-        this.init();
-        this.on_click();
-        this.on_pag();
-        this.on_hover();
-        this.cycle();
-    };
-
-    //添加原型方法
-    Banner.prototype = {
-        init: function() {
-            this.paging[0].style.display = this.paging[1].style.display = "none";
-            this.imgs[this.index].style.display = "block";
-            this.btn[this.index].className = "on";
-        },
-        //封窗重复方法
-        checkout: function checkout(callback) {
-            this.imgs[this.index].style.display = "none";
-            this.btn[this.index].className = "";
-            callback && callback();
-            this.imgs[this.index].style.display = "block";
-            this.btn[this.index].className = "on";
-        },
-        //点击事件
-        on_click: function () {
-            var This = this
-            for (var i=0; i<This.btn.length; i++) {
-                This.btn[i].index = i;
-                This.btn[i].onclick = function () {
-                    var that = this;
-                    This.checkout(function () {
-                        This.index = that.index;
-                    })
-                };
-
-                //禁止拖拽事件
-                This.imgs[i].ondrag = This.imgs[i].onmousedown = function(e) {
-                    e = e || event;
-                    e.preventDefault ? e.preventDefault() : window.event.returnValue = false;
-                };
-            };
-        },
-        //点击左右两侧三角按钮
-        on_pag: function() {
-            var This = this;
-            for (var i=0; i<This.paging.length; i++) {
-                This.paging[i].index = i;
-                This.paging[i].onclick = function() {
-                    that = this;
-                    This.checkout(function () {
-                        if (that.index) {
-                            This.index++;
-                            This.index= This.index%This.imgs.length;
-                        } else {
-                            This.index--;
-                            if (This.index < 0) This.index = This.imgs.length - 1;
-                        };
-                    });
-                };
-            };
-        },
-        //鼠标划入划出事件
-        on_hover: function() {
-            var This = this;
-            This.wrap.onmouseover = function() {//划入
-                This.paging[0].style.display = This.paging[1].style.display = "block";
-                clearInterval(This.timer);
-            };
-            This.wrap.onmouseout = function() {//划出
-                This.paging[0].style.display = This.paging[1].style.display = "none";
-                This.cycle();
-            };
-        },
-        //自动轮播
-        cycle: function () {//循环定时器，轮播图片
-            var This = this;
-            This.timer = setInterval(function () {
-                This.checkout(function () {
-                    This.index++;
-                    if (This.index>4) This.index=0;
-                });
-            }, 1000)
-        },
-        constructor: Banner
-    }
-
-    //
-    new Banner(wrap, imgs, paging, btn);
-
-</script>
-</body>
-</html>
-```
-
-##### 4. 方法链
+##### 3. 方法链
 
 - 通过在每个原型方法后面添加返回`return this`实现
 
@@ -3482,7 +3264,7 @@ with(obj) {
 } 
 ```
 
-##### 5. 包装对象
+##### 4. 包装对象
 
 - JS原生对象`String`/`Number`/`Boolean`可以用来创建对应类型的数据；也可以把原始类型的值变成（包装成）对象
 
@@ -3532,7 +3314,7 @@ console.log(new String("123").double());
 > //无法直接创建，包装对象在调用该name属性时，会创建一个临时属性，调用完成后会直接销毁掉这个临时属性
 > ```
 
-##### 6. 关于对象引用
+##### 5. 关于对象引用
 
 ```javascript
 var a = 5;
@@ -3561,5 +3343,136 @@ console.log(a3,a4); //由于指向同一个内存地址，对a4进行操作时�
 
 a4 = [33,22]
 console.log(a3,a4); //对a4进行的新的赋值操作，代表重新赋值了一个新的对象给a4；a3和a4不再指向同一个地址
+```
+
+##### 6. 继承方式
+
+- 常用方法1
+
+```javascript
+//用构造函数创建一个父类
+function Person(name) {
+	this.name = name;
+	this.sum = function() {
+		alert(this.name)	
+	};
+}
+
+function SubType() {
+	Person.call(this, "zhou"); //借用构造函数继承，继承父类的构造函数属性
+};
+
+SubType.prototype = new Person(); //原型链继承。继承父类的原型属性
+
+var p3 = new SubType();
+console.log(p3.name);
+console.log(p3.age);
+console.log(p3.constructor); //实例p3的构造函数指向了父类Person
+
+//缺点：连续调用了2次父类构造函数，比较耗内存；子类的构造函数会代替原型上的那个父类构造函数。
+```
+
+-  常用方法2
+
+```javascript
+//用构造函数创建一个父类
+function Person(name) {
+	this.name = name;
+	this.sum = function() {
+		alert(this.name)	
+	};
+}
+
+function content1(obj) {
+    function Fn() {};
+    Fn.prototype = obj; //继承传入参数
+    return new Fn();    //返回函数对象
+};
+var con = content1(Person.prototype);
+//这里的操作类似原型链继承:
+// 第一步 新建函数Fn()
+// 第二步 Fn.prototype = Person.prototype
+// 第三步 返回一个新的构造函数（函数对象）
+// 继承父类的原型属性
+
+function Sub(name) {//继承父类构造函数的属性
+	Person.call(this, name);
+} //避免了连续两次调用父类构造函数属性
+
+Sub.prototype = con;
+// 第四步 Sub.prototype = Fn() 继承实例con的属性（con返回的是Fn()，Fn()继承了父类Person的原型属性）
+
+//创建新实例
+var sub1 = new Sub("Fang");
+console.log(sub1.name);
+
+console.log(sub1.constructor); //修复指向前，构造函数指向Person
+con.constructor = Sub;        //修复实例指向的构造函数，避免出现实例修改原型属性时导致父类原型属性发生变化
+console.log(sub1.constructor); //修复指向后， 构造函数指向Sub
+
+//解决了常用方法1中，连续调用2次父类构造函数的问题；子类构造函数被父类替代的问题
+```
+
+- 其他方式
+
+```javascript
+//用构造函数创建一个父类
+function Person(name) {
+    this.name = name;
+    this.sum = function() {
+        alert(this.name)
+    };
+}
+
+Person.prototype.age = 20; //添加一个原型属性
+
+//1.原型链继承
+function Per1() {
+    this.name = "Kang";
+}
+Per1.prototype = new Person(); //继承Person的属性
+
+var p1 = new Per1();
+console.log(p1.age);
+console.log(p1.name);
+
+//2.借用构造函数继承
+function Con() {
+    Person.call(this, "ma");  //继承了父类构造函数属性，但是无法继承原型属性
+    this.age = 18;
+}
+
+var p2 = new Con();
+console.log(p2.name);
+
+//3.原型式继承
+function content(obj) {
+    function Fn() {};
+    Fn.prototype = obj; //继承传入参数
+    return new Fn();    //返回函数对象
+};
+
+var p4 = new Person("wang");  //新建一个父类的实例
+var p5 = content(p4);   //继承父类函数的属性
+
+console.log(p5.age);  //20
+console.log(p5.name); //undefined（没有继承原型属性）
+
+//4.寄生式继承
+function f1(obj) {
+    function Fn() {};
+    Fn.prototype = obj; //继承传入参数
+    return new Fn();    //返回函数对象
+}
+
+var s1 = new Person();
+
+function f2(obj) {
+    var f3 = content(obj);
+    f3.name = "gar";
+    return f3;
+}
+var s3 = f2(s1);
+console.log(s3.name)
 ```
 
