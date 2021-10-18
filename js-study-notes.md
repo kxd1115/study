@@ -3476,3 +3476,169 @@ var s3 = f2(s1);
 console.log(s3.name)
 ```
 
+#### jQuery
+
+##### 1. 基本操作方法
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="box1">111</div>
+<div id="box2">222</div>
+<div id="box3">333</div>
+<div id="box4">444</div>
+<input class="input" type="text">
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script>
+
+    //原生方法改变标签在网页中显示的内容
+    var box1 = document.getElementById("box1");
+    box1.innerHTML = "我是原生js修改的内容"
+
+    var box4 = document.getElementById("box4");
+
+    //jQuery方法改变标签在网页中显示的内容
+    //$符号等于引用jQuery：$ === jQuery
+    $(function () {
+
+        $('#box2').html("我是jQuery更改的");
+        //html(t)可以方法用于修改标签内容，t可以为空；该方法可以解析标签，类似原生js中的innerHTML
+
+        $('#box3').text("<a href='javascript:void(0);'>跳转百度</a>>");
+        //text(t)方法不能解析标签，类似原生js中的innerTEXT
+
+        $('.input').val("请输入账号！");
+        //val方法主要用于input标签，用于自定义元素的内容
+
+    })
+</script>
+</body>
+</html>
+```
+
+##### 2. 对象转换
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="box4">123</div>
+<ul class="list">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ul>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script>
+
+    //jQuery方法改变标签在网页中显示的内容
+    //$符号等于引用jQuery：$ === jQuery
+    $(function () {
+
+        /*jQuery对象和原生js对象相互转换*/
+        //原生js对象转换为jQ对象
+        $('.box4').html("js对象转换为jQ对象");
+
+        //jQ对象转换为js对象
+        console.log($('.list li').get());
+        //$(...).get(n) 返回节点数组
+        // 参数n为空时，返回一个由多个子标签组成的数组；
+        // 参数n不为空时，返回索引的其中一个子标签，并转化为js对象
+
+        //点击事件：点击返回元素索引（绑定事件时，jQuery会自动将时间绑定到事件对象下的每一个子元素）
+        $('.list li').click(function() { //click方法：点击事件
+            console.log($(this).index()); //index()返回当前标签的索引
+        });
+
+        //each()方法：可以遍历选取的节点元素中每一个字标签
+        $('.list li').each(function(index, Element) {
+            /*
+            * Element：返回当前的标签
+            * index：当前标签的索引
+            * */
+            $(Element).html(""+index+index+index);
+        })
+
+        //$(...).eq(n)：返回索引为n的子标签，返回内容是一个jQ对象
+        $('.list li').eq(1).html(); // 111
+
+    })
+</script>
+</body>
+</html>
+```
+
+##### 3. 创建标签
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery标签操作</title>
+</head>
+<body>
+<div id="box"></div>
+<div id="box1">222</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script>
+    $(function() {
+
+        //创建元素
+        var $img = $('<img>');
+
+        $('#box').append($img); //将创建的img标签添加到div中；
+        $img.attr("src", "https://pic1.zhimg.com/80/v2-682f3e6698cec440dc0f0fd3222557da_400x224.jpg")
+        //attr(a, b)设置或者返回被选元素的属性值：a 需要设置的属性,b 属性设置的内容
+
+        /*append，appendTo*/
+        $('#box').append("<p>这是一段话</p>")
+        //$(m).append(n)方法可以将同级标签n添加到m标签的末尾，让n成为m的子标签
+        $('<p>这也是一段话</p>').appendTo($('#box'))
+        //$(m).appendTo(n)方法可以将同级标签m添加到n标签的末尾，让m成为n的子标签
+
+        /*prepend，prependTo*/
+        $('#box').prepend("<p>这是一段话</p>")
+        //$(m).prepend(n)方法可以将同级标签n添加到m标签的末尾，让n成为m的子标签
+        $('<p>这也是一段话</p>').prependTo($('#box'))
+        //$(m).prepend(n)方法可以将同级标签m添加到n标签的末尾，让m成为n的子标签
+
+        /*after, inserAfter  类似append, appendTo*/
+        /*before, inserBefore  类似prepend，prependTo*/
+
+        //清空元素中的内容
+        $('#box1').empty() //清空box1中的内容，让这个元素成为一个空元素
+
+        //移除标签
+        $('#box1').remove() //移除box1标签，支持填写参数
+
+    })
+</script>
+</body>
+</html>
+```
+
