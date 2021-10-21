@@ -2604,13 +2604,13 @@ alert(pwd.match(reg));
   >
   > url：文件地址
   >
-  > async：是否异步（true/false）
+  > async：是否异步（true/false），默认为true
   >
   > user/psw：可选参数（用户名和密码）
 
 - 注意
 
-  POST请求下需要设置请求头类型（GET请求下不需要）
+  POST请求下需要设置请求头类型（GET请求下可以不设置）
 
   `xhr.setRequestHeader('Content-Type', 'application/x-www-form-urllencoded')`
 
@@ -3641,4 +3641,212 @@ console.log(s3.name)
 </body>
 </html>
 ```
+
+##### 4. 选择器
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="box1">
+        <span>
+            我是span标签1
+        </span>
+        <div><span>我是span标签2</span></div>
+    </div>
+    <input type="text" value="请输入账号">
+    <div class="box2">
+        <input type="text" value="随便输入">
+    </div>
+    <input type="text" value="想输入什么就输入什么">
+    <div>
+        <ul class="list">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+        </ul>
+    </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script></script>
+</body>
+</html>
+```
+
+- 选择.box1下面的所有span标签
+
+```javascript
+console.log($('.box1 span'))
+```
+
+- 选择.box1下面的子级元素span
+
+```javascript
+console.log($('.box1 > span'))
+```
+
+- 选择.box1后面紧跟着的第一个input标签
+
+```javascript
+console.log($('.box1 + input'))
+```
+
+- 选择.box1后面所有的同级input标签
+
+```javascript
+console.log($('.box1 ~ input'))
+```
+
+-  :even 选择所有索引值为偶数的标签
+
+```javascript
+$('.list > li:even').css('background', "orange")
+```
+
+-  :odd 选择所有索引值为奇数的标签
+
+```javascript
+$('.list > li:odd').css('background', "#34d0fc")
+```
+
+-  :gt(n) 选择所有索引值大于n的标签
+
+```javascript
+$('.list > li:gt(6)').css('font-size', '30px')
+```
+
+-  :lt(n) 选择所有索引值小于n的标签
+
+```javascript
+$('.list > li:lt(2)').css('font-size', '30px')
+```
+
+> // :eq(n) 选择第n个标签
+> // :not(ele) 选择除了ele之外的标签
+
+##### 5. ajax操作
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax</title>
+</head>
+<body>
+<h1>HOME</h1>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script>
+
+    $.ajax({
+        type: 'POST', //可以不写，默认为GET
+        url: '/api_data', //发送请求的地址
+        data: {
+            name: "zhang",
+            age: 20,
+            marry: false,
+        },  //发送到服务器的数据（将自动转换为请求字符串格式）
+        success: function(data) {
+            console.log(data);
+        },  //成功时的回调函数
+        error: function() {
+            /*默认三个参数
+            * XMLHttpRequest //请求信息
+            * textStatus     //错误代码
+            * errorTahrown   //详细信息
+            * */
+        },  //失败时的回调函数
+
+    });
+
+    //简化写法
+    $.get(//直接.get()使用get请求方法
+        //参数：url, data:{}, callback(成功请求后的回调函数), type(返回内容格式)
+        '/api_data',
+        data = {
+           name:"ma",
+           age:22,
+           marry: false,
+        },
+        function() {
+            console.log(data)
+        }
+    )
+
+    //$.post()和.get()方法基本一致
+
+    //关于jsonp
+    $.ajax({
+        type:"GET",
+        url: "/",
+        data: {
+            wd: "aaa"
+        },
+        jsonp: "rsv_t",  //重写回调函数的名字，会导致请求成功时返回"rsv_t=?"给服务器
+        dataType: 'jsonp', //将数据类型调整为jsonp格式
+        success: function(data) {
+            console.log(data)
+        }
+    })
+
+</script>
+</body>
+</html>
+```
+
+##### 6. 属性
+
+- attr和removeAttr
+
+```javascript
+var $img = $('<img>');
+
+$(document.body).append($img);
+
+//attr：给标签添加多个属性
+$img.attr({
+'src':"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fww2.sinaimg.cn%2Fmw690%2F006kvRjAgy1gvilmxl0gdj61hc0u0tj502.jpg&refer=http%3A%2F%2Fwww.sina.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1637414466&t=6dd5a3d8b2eef912c7072c0372b8b0a0",
+'width': '200px',
+});
+
+//removeAttr：删除标签属性
+$img.removeAttr('width');
+```
+
+- addClass和removeClass
+
+```javascript
+//addClass：给元素添加class名字
+$('div').addClass('box1');
+
+//removeClass：移除某个标签的class名称
+$('div').removeClass('box1')
+```
+
+- toggleClasss
+
+```javascript
+//toggleClass：如果存在这个class名字，就删除；如果不存在，就添加
+$("div").toggleClass("box1")
+```
+
+
 
