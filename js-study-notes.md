@@ -3644,53 +3644,6 @@ console.log(s3.name)
 
 ##### 4. 选择器
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>选择器</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-</head>
-<body>
-<div>
-    <div class="box1">
-        <span>
-            我是span标签1
-        </span>
-        <div><span>我是span标签2</span></div>
-    </div>
-    <input type="text" value="请输入账号">
-    <div class="box2">
-        <input type="text" value="随便输入">
-    </div>
-    <input type="text" value="想输入什么就输入什么">
-    <div>
-        <ul class="list">
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
-            <li>10</li>
-        </ul>
-    </div>
-</div>
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
-<script></script>
-</body>
-</html>
-```
-
 - 选择.box1下面的所有span标签
 
 ```javascript
@@ -3848,5 +3801,187 @@ $('div').removeClass('box1')
 $("div").toggleClass("box1")
 ```
 
+##### 7. css操作
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css操作</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box2 {
+            width: 200px;
+            height: 200px;
+            background-color: #b7fffd;
+            position: relative;
+            left: 400px;
+        }
+
+        #box3 {
+            width: 50px;
+            height: 50px;
+            background-color: #ff00cc;
+            position: absolute;
+            left: 10px;
+            padding-left: 2px;
+            border: 2px solid #666666;
+        }
+
+        body {
+            height: 2000px;
+        }
+    </style>
+</head>
+<body>
+<div id="box1"></div>
+<div id="box2">
+    <div id="box3"></div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script>
+
+    $(function() {
+
+        // .css
+        $("#box1").css({
+            "width": "300px",
+            "height": "300px",
+            "background": "skyblue",
+        });
+
+        //offset()：获取匹配元素在当前窗口的相对偏移，可以获取元素距离窗口左侧/顶部的距离(left/top)
+        console.log($("#box3").offset().left); //410px
+        console.log($("#box3").offset().top);  //300px
+
+        //position()：获取匹配元素在定位父级中的相对偏移，可以获取元素距离定位父级左侧/顶部的距离(left/top)
+        console.log($("#box3").position().left); //10px
+        console.log($("#box3").position().top);  //0px
+
+        //scrollTop：用于获取元素距离滚动条顶部的距离，可以填写参数，设置距离顶部的距离
+        $(window).scrollTop();
+        $(window).scrollLeft(); //原理一致
+
+        //height/width：获取元素设置的宽高度，填写参数也可以设置宽高度
+        console.log($("#box3").height()); // 50（不计算边框，内外边距等）
+        console.log($("#box3").width());  // 50
+
+        //innerHeight/innerWidth：计算元素内部宽高度（height+padding）
+        console.log($("#box3").innerHeight()); //50
+        console.log($("#box3").innerWidth());  //52
+
+        //outerHeight/outerWidth：计算元素外部宽高度（height+padding+border）
+        console.log($("#box3").outerHeight()); // 50+2+2 = 54
+        console.log($("#box3").outerWidth());  // 50+2+2+2 = 56
+
+    })
+
+</script>
+</body>
+</html>
+```
+
+##### 8. 筛选操作
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>筛选</title>
+    <style>
+        * {
+          margin: 0;
+            padding-left: 0;
+        }
+
+        #box1 {
+            width: 200px;
+            height: 200px;
+            background-color: #666666;
+            position: relative;
+        }
+
+        #box2 {
+            width: 180px;
+            height: 180px;
+            background-color: #b7fffd;
+        }
+
+        #box3 {
+            width: 160px;
+            height: 160px;
+            background-color: #00dfff;
+        }
+
+    </style>
+</head>
+<body>
+<ul>
+    <li class="a">1</li>
+    <li class="b">2</li>
+    <li class="c">3</li>
+    <li class="d">4</li>
+</ul>
+<div id="box1">
+    <div id="box2">
+        <div id="box3"></div>
+    </div>
+    <div id="box4">
+        <div id="box5"></div>
+    </div>
+    <div id="box6"></div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script>
+
+    $(function() {
+        // eq(n)：获取匹配的第n个元素
+        $("li").eq(2);
+
+        // first(n)、last(n)：获取匹配的第一个/最后一个元素n
+        $("li").first();
+        $("li").last();
+
+        // hasClass：检查是否有该类名
+        console.log($("li").hasClass("c")); //ture
+
+        // not：排除该元素的其他元素
+        console.log($("li").not($(".d")));
+
+        // children：当一个元素有多个子元素时，查找所有子元素/查找所有符合条件的子元素（只能查找子元素，不考虑所有后代元素）
+        console.log($("#box1").children()); //参数可选 children("#box2")
+
+        // find：查找所有符合要求的后代元素(子孙元素)
+        console.log($("#box1").find("div"));
+
+        // next：查找下一个(符合要求的)同级元素
+        console.log($("#box2").next("div")); // #box4
+        // nextAll：查找之后所有的（符合要求的）同级元素
+        console.log($("#box2").nextAll("div")); // #box4 #box6
+
+        // next：查找上一个(符合要求的)同级元素
+        console.log($("#box6").prev("div"));  // #box4
+        // nextAll：查找之前所有的（符合要求的）同级元素
+        console.log($("#box6").prevAll("div")); // #box4 #box2
+
+        // offsetParent：返回该元素的父级定位元素
+        console.log($("#box2").offsetParent()); // #box1，当没有父级定位元素时，返回的是html（也就是当前网页）
+
+        // parent：返回包含该元素的父级元素
+        console.log($("#box3").parent()); // #box2
+
+        // siblings：查找该元素之外的所有(符合要求的)同级元素
+        console.log($("#box2").siblings());
+    })
+
+</script>
+</body>
+</html>
+```
 
