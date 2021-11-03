@@ -3985,3 +3985,101 @@ $("div").toggleClass("box1")
 </html>
 ```
 
+##### 9. jQuery事件
+
+> html内容
+
+```html
+<form action="form_action.asp", method="get">
+    <p>name: <input type="text" value="输入名字"></p>
+    <input type="submit" value="提交">
+</form>
+<div id="box">
+    <span>你说什么？</span>
+    <span>我听不见！</span>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+    </ul>
+</div>
+```
+
+> 事件操作
+
+- ready事件
+
+```javascript
+$(function($) {
+	//在里面写jQuery代码
+}
+//window.load事件注册事件的代替写法
+```
+
+- on() 绑定事件
+
+```javascript
+$('#box').on('click', 'li', function() {// 事件方法仅对#box的子标签li生效
+	alert(1);
+});
+
+$('#box > ul').append("<li>6</li>"); // 新添加的子元素也可以使用on绑定的事件方法
+
+// 支持同时绑定多个事件：.on('event1 event2', ....)
+// 支持绑定自定义事件
+```
+
+- on() 阻止默认时间和阻止冒泡
+
+```javascript
+// 阻止默认事件且阻止冒泡
+$('form').on('submit', false); //阻止表单提交事件
+
+// 仅阻止默认事件
+$('form').on('submit', function(event) {
+	event.preventDefault();
+});
+```
+
+- trigger()和triggerHandler() 执行事件函数
+
+```javascript
+// 使用on创建一个自定义事件
+$('span').on('myEvent', function(event, a, b) {
+    alert(a+b);
+});
+
+// 使用trigger触发执行事件
+$('span').trigger('myEvent', ["hello! ", "world! "])
+
+// triggerHandler：只触发jQuery对象集合中的第一个元素，且不会触发浏览器默认事件和冒泡事件
+$('span').triggerHandler('myEvent', ["你好! ", "世界! "]);
+```
+
+- off() 移除事件
+
+```javascript
+$('#box').off('click', 'li');
+// 移除绑定在#box上用.on()方法绑定在li标签上的click事件
+```
+
+- one() 添加一个一次性的事件处理函数（只会执行一次）
+
+```JavaScript
+$('ul').one('click', 'li', function() {
+	alert("only one");
+});
+```
+
+- hover(over, out) 划入划出事件
+
+```javascript
+$('ul > li').hover(
+    function() {// over
+    	$(this).css("background", "skyblue");
+    },
+    function() {// out
+    	$(this).css("background", "");
+    }
+);
+```
+
