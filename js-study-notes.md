@@ -4188,3 +4188,143 @@ $('.wrap').click(function() {
 });
 ```
 
+##### jQuery工具
+
+- extend
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>扩展工具</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+            height: 100px;
+            width: 100px;
+            background-color: #b7fffd;
+        }
+    </style>
+</head>
+<body>
+<div id="box" class="box1"></div>
+<script>
+    $(function($) {
+        //jquery.fn.extend 给jquery对象添加方法
+        //添加的方法只有该对象可以使用
+        $.fn.extend({
+            hasId: function(idName) {
+                return $(this).is('#'+idName)
+            }
+        });
+
+        console.log($('.box1').hasId('box'));
+
+        //jquery.extend 给jquery类本身添加方法
+        var str1 = {
+            name: " John " ,
+            location:{
+                city: " Boston " ,county: " USA "
+            }
+        };
+        var str2 = {
+            last: " Resig " ,
+            location: {
+                state: " MA " ,county: " China "
+            }
+        };
+        console.log($.extend(str1, str2));  //将对象合并到str1中
+        console.log($.extend({}, str1, str2)); //将对象合并到 {} 中
+        // 以上方法后面的对象会覆盖前面对象中key一致的value（相同的key，对应的不用value，前者会被覆盖）
+
+        console.log($.extend(true, {}, str1, str2)); //将对象合并到 {} 中，采取深度拷贝（不会覆盖value）
+    })
+</script>
+</body>
+</html>
+```
+
+##### jQuery练习：返回顶部
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>返回顶部</title>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_2936948_j237juip7ss.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 3000px;
+        }
+
+        .sidebar {
+            position: fixed; /*定位到窗口最外层*/
+            right: 100px;
+            bottom: 150px;
+        }
+
+        .sidebar .top {
+            display: block;
+            width: 60px;
+            height: 70px;
+            border: 1px solid #e5e5e5;
+            font-size: 40px;
+            line-height: 76px;
+            text-align: center;
+            color: #666666;
+            text-decoration: none;
+            border-radius: 3px;
+            display: none;
+        }
+
+        .sidebar .top:hover {
+            background-color: #e5e5e5;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <a class="top iconfont icon-top" href="javascript: void(0);"></a>
+</div>
+<script>
+    $(function($) {
+
+        var $top = $('.top');
+        
+        //滚动事件
+        $(window).scroll(function() { //滚动滚轴则显示
+            var nowTop = $(this).scrollTop(); //当前滚动轴高度
+
+            if(nowTop>0) {//显示
+                $top.css('display', 'block');
+            } else {//隐藏
+                $top.css('display', 'none');
+            };
+        }).trigger('scroll');
+        
+        //点击事件
+        $top.click(function() { //点击滚动到顶部，滚动轴高度变化为0
+            $('body, html').stop().animate({scrollTop: 0}, 600)
+        })
+        
+    })
+</script>
+</body>
+</html>
+```
+
