@@ -4083,3 +4083,108 @@ $('ul > li').hover(
 );
 ```
 
+##### jQuery效果
+
+> html内容
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>效果</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #box {
+            width: 150px;
+            height: 100px;
+            background-color: #00dfff;
+        }
+        .wrap {
+            width: 100px;
+            height: 100px;
+        }
+        button {
+            width: 70px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div id="box">hello! world!</div>
+</div>
+<hr>
+<button id="go">GO</button>
+<button id="stop">STOP</button>
+<button id="back">BACK</button>
+</body>
+</html>
+```
+
+- jQuery效果函数参数(s, e, fn)(大部分效果函数都有这3个参数)
+
+  s: 效果花费的时长
+
+  e: 动画效果类型
+
+  fn: 回调函数，执行完效果后的操作
+
+> 几种固定效果方法
+
+```javascript
+$('.wrap').click(function() {
+    
+    // show hide toggle
+    $('#box').hide(3000); //点击后3秒钟内隐藏#box元素
+    $('#box').show(2000); //然后2秒钟内显示
+    $('#box').toggle(200); //如果元素可见，则隐藏；不可见，则显示
+
+    // slideDown slideUp
+    $('#box').slideUp(300); //向上变小
+    $('#box').slideDown(300); //向下增大
+    $('#box').slideToggle(400); //如果元素可见，则向上变小；不可见，则向下增大
+
+    // fadeIn fadeOut fadeTo fadeToggle
+    $('#box').fadeOut(300); //逐渐透明
+    $('#box').fadeIn(300);  //逐渐不透明
+    $('#box').fadeTo(300, 0.5); // 将元素调整到一个指定的透明底(0-1之间的数字)
+    $('#box').fadeToggle(400)  //如果可见，则变化至全透明；不可见，则变化成不透明
+
+    // delay 延时执行队列中的下一个效果
+    $('#box').fadeOut(300).delay(1000).fadeIn(300); //延时1秒执行后面的透明效果
+
+});
+```
+
+> animate 自定义动画效果
+
+```javascript
+// animate，只能自定义参数是数字的样式值
+    $('#go').click(function() {
+        $('#box').animate({
+        width: 1000,
+        fontSize: 50
+        }, 3000)
+    });
+
+    // stop(bool1, bool2)
+    // 停止一切正在进行中的动画
+    //bool1: 设置为true(立即清空队列)
+    //bool2: 设置为true(立即完成队列)
+    $('#stop').click(function() {
+    	$('#box').stop()	
+    });
+
+    $('#back').click(function() {
+        $('#box').animate({
+        width: 0,
+        fontSize: 1
+    }, 3000)
+});
+```
+
