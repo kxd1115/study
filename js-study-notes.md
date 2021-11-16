@@ -4328,3 +4328,193 @@ $('.wrap').click(function() {
 </html>
 ```
 
+##### jQuery练习：实现吸顶效果(ing)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>吸顶效果</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        * {
+            border: 0;
+            margin:0 ;
+            padding: 0;
+            outline: 0;
+            vertical-align: baseline;
+            font-size: 100%;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        li {
+          list-style: none; /*清空默认列表样式*/
+        }
+
+        .header {
+            height: 120px;
+        }
+
+        #nav {
+            width: 1000px;
+            margin: 0 auto;
+        }
+
+        .nav-wrap {
+            height: 40px;
+        }
+
+        #nav li {
+            float: left; /*定义浮动方向*/
+            padding: 11px;
+            position: relative;
+        }
+
+        #nav a {
+            display: block;
+        }
+
+        #nav a:hover {
+            color: #f10180;
+        }
+
+        #one {
+            width: 78px;
+            background-color: #f10180;
+            cursor: pointer;
+
+        }
+
+        #one a, #one a:hover {
+            /*商品分类*/
+            display: block;
+            text-align: center;
+            color: white;
+        }
+
+        #more {
+            width: 78px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        #more a {
+            display: block;
+            margin: 0 auto;
+            padding-left: 15px;
+            /*position: absolute;*/
+        }
+
+        #traingle {
+            /*三角符号*/
+            display: block;
+            width: 0;
+            height: 0;
+            margin: -10px -12px 0 35px;
+            vertical-align: middle;
+            border-top: 5px solid ;
+            border-left: 5px dotted transparent;
+            border-right: 5px dotted transparent;
+            top: 20px;
+            right: 20px;
+        }
+
+        #more:hover a {
+            color: #f10180;
+        }
+
+        #more:hover{
+            box-shadow: 0 0 10px #e3e3e3;
+        }
+
+        #box {
+            width: 78px;
+            height: 150px;
+            margin-top: 12px;
+            padding-left: 10px;
+            display: none;
+            /*position: absolute;*/
+        }
+
+        #box li {
+            text-align: center;
+        }
+
+        #more:hover #box{
+            display: block;
+        }
+
+        #more li:hover {
+            color: #f10180;
+        }
+
+        .onClick a {
+            /*点击事件后触发*/
+            font-weight: bold;
+            color: #f10180;
+            cursor: default;
+        }
+
+    </style>
+</head>
+<body>
+<div class="header"></div>
+<div class="nav-wrap">
+    <ul id="nav">
+        <li id="one"><a href="javascript: void(0)">商品分类</a></li>
+        <li><a href="javascript: void(0)">推荐</a></li>
+        <li><a href="javascript: void(0)">3折疯抢</a></li>
+        <li><a href="javascript: void(0)">唯品快抢</a></li>
+        <li><a href="javascript: void(0)">唯品奥莱</a></li>
+        <li><a href="javascript: void(0)">女装</a></li>
+        <li><a href="javascript: void(0)">鞋包</a></li>
+        <li><a href="javascript: void(0)">男装</a></li>
+        <li><a href="javascript: void(0)">母婴</a></li>
+        <li><a href="javascript: void(0)">运动</a></li>
+        <li><a href="javascript: void(0)">美妆</a></li>
+        <li><a href="javascript: void(0)">内衣</a></li>
+        <li><a href="javascript: void(0)">电器</a></li>
+        <li id="more">
+            <a href="javascript: void(0)">
+                更多
+                <i id="traingle"></i>
+            </a>
+            <div id="box">
+                <ul>
+                    <li>百货</li>
+                    <li>首饰</li>
+                    <li>家纺</li>
+                    <li>食品</li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>
+<script>
+
+    //原生js方法
+    var x_li = document.getElementById("nav").getElementsByTagName("li");
+    var index = 1;
+
+    for ( var i=1; i<13; i++) {
+        x_li[i].index = i;
+        x_li[i].onclick = function() {
+            x_li[index].className = "";
+            index = this.index;
+            x_li[index].className = "onClick";
+        };
+    };
+
+    $(function($) {
+        //尝试用jquery方法写
+    })
+</script>
+</body>
+</html>
+```
+
