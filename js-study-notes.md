@@ -4328,7 +4328,7 @@ $('.wrap').click(function() {
 </html>
 ```
 
-##### jQuery练习：实现吸顶效果(ing)
+##### jQuery练习：实现吸顶效果
 
 ```html
 <!DOCTYPE html>
@@ -4347,13 +4347,19 @@ $('.wrap').click(function() {
             font-size: 100%;
         }
 
+        body {
+            height: 2000px;
+        }
+
         a {
             color: #333;
             text-decoration: none;
+            line-height: 90%;
         }
 
         li {
-          list-style: none; /*清空默认列表样式*/
+            list-style: none; /*清空默认列表样式*/
+            height: 18px;
         }
 
         .header {
@@ -4367,6 +4373,8 @@ $('.wrap').click(function() {
 
         .nav-wrap {
             height: 40px;
+            background-color: #F0F8FF;
+            width: 100%;
         }
 
         #nav li {
@@ -4463,7 +4471,7 @@ $('.wrap').click(function() {
     </style>
 </head>
 <body>
-<div class="header"></div>
+<div class="header" style="background-color: #666666"></div>
 <div class="nav-wrap">
     <ul id="nav">
         <li id="one"><a href="javascript: void(0)">商品分类</a></li>
@@ -4495,9 +4503,12 @@ $('.wrap').click(function() {
         </li>
     </ul>
 </div>
+<ul>
+    <li>1</li>
+</ul>
 <script>
 
-    //原生js方法
+    //原生js方法：点击事件
     var x_li = document.getElementById("nav").getElementsByTagName("li");
     var index = 1;
 
@@ -4511,7 +4522,34 @@ $('.wrap').click(function() {
     };
 
     $(function($) {
-        //尝试用jquery方法写
+
+        //封装
+        $.fn.extend({
+            scroptop: function(max, plus) {
+                var $nav = $(this);
+                max = 120 || $nav.scroll().top;
+                plus = plus || 0;
+
+                $(window).on("scroll", function() {
+                    var nowTop = $(this).scrollTop(); //目前滚轴的高度
+
+                    if (nowTop>(max+plus)) {
+                        $nav.css({
+                            position: "fixed", //相对窗口定位
+                            top: 0,
+                        })
+                    }
+                    if (nowTop<=(max+plus)) {
+                        $nav.css({
+                            // position: "static",//默认值
+                            top: max - nowTop,
+                        })
+                    }
+                })
+            }
+        });
+
+        $('.nav-wrap').scroptop(120,300); //执行
     })
 </script>
 </body>
