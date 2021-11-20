@@ -4556,3 +4556,283 @@ $('.wrap').click(function() {
 </html>
 ```
 
+##### jQuery练习：百度经验吸顶效果
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百度经验吸顶效果</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #wrap {
+            width: 1070px;
+            margin: 0 auto;
+        }
+
+        .brow {
+            height: 48px;
+        }
+
+        #sorption {
+            width: 100%;
+            height: 40px;
+            background-image: url("img-baidu/sorption.png");
+            background-position: center 0; /*背景图像定位*/
+            background-repeat: no-repeat; /*是否重复使用背景图像*/
+            background-color: #fbfbfb;
+            position: fixed;
+            top: 0;
+            border-left: 0;
+            border-right: 0;
+            border-bottom: 1px solid #bbb;
+            box-shadow: 3px 0px 0px #bbb;
+            display: none;
+            z-index: 9;
+        }
+
+        .header {
+            height: 1777px;
+            background-image: url("img-baidu/bouilli.png");
+        }
+
+        .content {
+            width: 680px;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: normal;
+            color: #333;
+            border-bottom: 1px solid #e6e6e6;
+            line-height: 42px;
+        }
+
+        .main {
+            margin-top: 15px;
+        }
+
+        .main li {
+            list-style: none;
+            border-left: 2px dotted #e6e6e6;
+            margin-left: 16px;
+            padding-left: 32px;
+            padding-bottom: 32px;
+            position: relative;
+        }
+
+        .main li > i {
+            font-style: normal;
+            color: #ffffff;
+            position: absolute;
+            left: -17px;
+            width: 32px;
+            height: 32px;
+            background-image: url("img-baidu/step.png");
+            text-align: center;
+            line-height: 32px;
+        }
+
+        .main li > p {
+            line-height: 32px;
+            font-size: 15px;
+            color: #333;
+            padding-bottom: 12px;
+        }
+
+        .main li > img {
+            max-width: 500px;
+            display: block;
+            padding-bottom: 18px;
+        }
+
+        #end-wrap {
+            position: relative;
+            height: 20px;
+        }
+
+        #end {
+            position: absolute;
+            bottom: 0;
+            font-size: 10px;
+            color: #e6e6e6;
+            text-align: center;
+            background-color: #ffffff;
+            left: -46px;
+        }
+
+        .step {
+            position: fixed;
+            top: 41px;
+            /*margin-left: -534px;*/
+        }
+
+        .step li {
+            left: 50%;
+            color: #ffffff;
+            width: 32px;
+            height: 33px;
+            background-image: url("img-baidu/step.png");
+            background-repeat: no-repeat;
+            background-position: 0px -68px;
+            text-align: center;
+            line-height: 33px;
+            display: none;
+        }
+
+        .step li:hover, .step li.on  {
+            background-position: 0px -0px;
+            cursor: pointer;
+        }
+
+        .footer {
+            width: 1070px;
+            height: 1151px;
+            background-image: url("img-baidu/footer.png");
+            background-repeat: no-repeat;
+        }
+
+    </style>
+</head>
+<body>
+<div class="brow"></div>
+<div id="sorption"></div>
+<div id="wrap">
+    <div class="header"></div>
+    <div class="content">
+
+        <h2 class="title">方法/步骤</h2>
+
+        <ul class="main">
+            <li><i class="icon-num">1</i>
+                <p>准备食材</p>
+                <img src="img-baidu/1.jpg" alt="">
+                <img src="img-baidu/2.jpg" alt="">
+                <img src="img-baidu/3.jpg" alt="">
+            </li>
+            <li><i class="icon-num">2</i>
+                <p>五花肉切小块</p>
+                <img src="img-baidu/4.jpg" alt="">
+            </li>
+            <li><i class="icon-num">3</i>
+                <p>锅中烧热水，放切好的五花肉块去除浮沫盛出，大概煮2分钟左右就可以了</p>
+                <img src="img-baidu/5.jpg" alt="">
+                <img src="img-baidu/6.jpg" alt="">
+            </li>
+            <li><i class="icon-num">4</i>
+                <p>锅中加少许油，倒入过了热水的五花肉炸出油，边炸边倒油出来，这样可以保证瘦肉不柴；不用把油全炸出来，炸至两面焦黄就可以了，</p>
+                <img src="img-baidu/7.jpg" alt="">
+            </li>
+            <li><i class="icon-num">5</i>
+                <p>锅中烧油，关火，加白沙糖炒出糖色；技巧：小火炒糖，至焦黄，加少许水</p>
+                <img src="img-baidu/8.jpg" alt="">
+                <img src="img-baidu/9.jpg" alt="">
+            </li>
+            <li><i class="icon-num">6</i>
+                <p>锅中放油，依次放入八角、姜、大葱炒香；然后加五花肉翻炒</p>
+                <img src="img-baidu/10.jpg" alt="">
+                <img src="img-baidu/11.jpg" alt="">
+            </li>
+            <li><i class="icon-num">7</i>
+                <p>加糖色一起炒至所有的肉块都染上糖色</p>
+                <img src="img-baidu/12.jpg" alt="">
+            </li>
+            <li><i class="icon-num">8</i>
+                <p>加水煮，可以直接加水煮，也可以像我一样放入电压力锅里压，压过的肉会更浓香些</p>
+                <img src="img-baidu/13.jpg" alt="">
+            </li>
+            <li><i class="icon-num">9</i>
+                <p>压力锅里压好的肉，倒出在锅里加盐，收汁</p>
+                <img src="img-baidu/14.jpg" alt="">
+            </li>
+            <li style="padding-bottom: 0"><i class="icon-num">10</i>
+                <p>做好盛出</p>
+                <img src="img-baidu/15.jpg" alt="">
+                <img src="img-baidu/16.jpg" alt="">
+                <div id="end-wrap">
+                    <span id="end">END</span>
+                </div>
+            </li>
+        </ul>
+        <ul class="step">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+        </ul>
+
+    </div>
+    <div class="footer"></div>
+</div>
+<script>
+
+    $(function($) {
+
+        var $sorption = $("#sorption");
+        var $step = $(".step > li");
+        var $icon = $(".icon-num");
+
+        $(window).on("scroll", function() {
+
+            //头部吸顶
+            var nowTop = $(this).scrollTop();
+            (nowTop>180) ? $sorption.show() : $sorption.hide();
+
+            //序列号吸顶
+            $icon.each(function(i) {
+
+                //吸顶
+                var target = $(this).offset().top - nowTop;
+
+                if (target < (43+i*33)) {
+                    $step.eq(i).show().addClass("on").siblings().removeClass("on");
+                    //展示并添加class名on，并移除其他同级元素的class名on
+
+                    $(this).css('opacity', 0);
+
+                    //滚动到底部时隐藏
+                    $step.each(function() {
+                        var $stepParent = $step.parent();
+                        var $iconParent = $icon.eq(-1).parent("li");
+
+                        var nowHigh = $stepParent.offset().top + $stepParent.height();
+                        var maxHigh = $iconParent.offset().top + $iconParent.height() - 32;
+
+                        if (nowHigh > maxHigh) $(this).hide();
+                    })
+                } else {
+                    $step.eq(i).hide()
+                    $(this).css('opacity', 1);
+                }
+            });
+        }).trigger("scroll");
+
+        //点击跳转至目标序列号
+        $step.on("click", function() {
+            var i = $(this).index();
+
+            //自定义动画：修改scrollTop值
+            $('body, html').stop().animate({
+                scrollTop: $icon.eq(i).offset().top - 43,
+            }, 500) //500毫秒运动到指定位置
+        })
+
+    })
+
+</script>
+</body>
+</html>
+```
+
