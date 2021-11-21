@@ -4836,3 +4836,55 @@ $('.wrap').click(function() {
 </html>
 ```
 
+#### Boostrap框架
+
+- 可以设置全局CSS样式，通过class名来设置样式效果；还有独特的栅格系统用于操作DOM
+
+##### 1. 布局容器
+
+> `.container`  固定宽度，并能够响应式布局
+>
+> `.container-fluid`  100%宽度占据屏幕
+
+##### 2. 栅格系统
+
+通过一系列的行`row`与列`column`的组合来创建布局
+
+`.row`必须被`.contianer` /`.contianer-fluid`包含
+
+`.col-xs-n`等必须被`.row包含`
+
+>n（1-12）默认最大列为12列
+>
+>针对不同尺寸的`.col`前缀
+>
+>- 超小屏幕 -手机（<768px）  `.col-xs-n`
+>- 小屏幕-平板（≥768px）       `.col-sm-n`
+>- 中屏幕（≥992px）                 `.col-md-n`
+>- 大屏幕（≥1200px）               `.col-lg-n`
+>
+>每一列的宽度相等
+
+列偏移（只能向右偏移）!!!
+
+> 使用`.col-sm-offset-n`来进行列偏移（向右偏移n列）	
+
+嵌套列
+
+>  可以在已经存在的列里面进行嵌套新的被`.row`包含的列
+
+```javascript
+<div class='.row'>
+	<div class='.col-md-11'>
+	    <div class='.row'>
+	    	<div class='.col-md-8'>.col-md-8</div>
+	    </div>
+	</div>
+</div>
+```
+
+
+
+
+
+##### 
