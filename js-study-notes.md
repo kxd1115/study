@@ -4867,24 +4867,50 @@ $('.wrap').click(function() {
 
 列偏移（只能向右偏移）!!!
 
-> 使用`.col-sm-offset-n`来进行列偏移（向右偏移n列）	
+> 使用`offset-sm-n`来进行列偏移（向右偏移n列）	
 
 嵌套列
 
 >  可以在已经存在的列里面进行嵌套新的被`.row`包含的列
 
-```javascript
-<div class='.row'>
-	<div class='.col-md-11'>
-	    <div class='.row'>
-	    	<div class='.col-md-8'>.col-md-8</div>
-	    </div>
-	</div>
-</div>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Boostrap前言和容器、栅格系统</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!--
+    Boostrap
+    可以设置全局CSS样式，通过class名设置样式得到增强效果
+    1.对移动端友好：根据移动设备的尺寸自动调整页面样式
+
+    布局容器：
+     .container 固定宽度且支持响应式
+     .container-fuild 100%全屏宽度
+    -->
+    <div class="container">
+        <div class='row' style="width: 1200px">
+            <div class='col-sm-4' style="background-color: #666666; height: 200px">
+                <div class='row'>
+                    <div class='col-sm-8' style="background-color: #00dfff; height: 200px">1</div>
+                    <div class='col-sm-3 offset-sm-1' style="background-color: #ff00cc; height: 200px">2</div>
+                </div>
+            </div>
+            <div class="col-sm-4 offset-sm-4" style="background-color: #b7fffd; height: 200px">向右偏移1格</div>
+        </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.min.js"></script>
+</body>
+</html>
 ```
-
-
-
-
-
-##### 
