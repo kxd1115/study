@@ -48,3 +48,11 @@ $ sudo apt-get install gcc
 $ sudo apt-get install g++
 ```
 
+
+
+## 3. git地址
+
+```
+cd /mnt/hgfs/code_share/study
+```
+
