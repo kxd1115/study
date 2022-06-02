@@ -56,3 +56,27 @@ $ sudo apt-get install g++
 cd /mnt/hgfs/code_share/study
 ```
 
+
+
+## 4. 打开hosts文件
+
+```
+gedit /etc/hosts
+```
+
+
+
+### 5. 关于网络问题
+
+**问题分析：如果只看到\**lo\**这个名字的数据，说明网卡还没驱动或者没有添加网卡**
+
+**解决方法：安装无线网卡即可**
+
+```
+sudo lshw -numeric -class network
+sudo route -nv
+sudo dhclient -v**
+```
+
+
+
