@@ -61,7 +61,7 @@ cd /mnt/hgfs/code_share/study
 ## 4. 打开hosts文件
 
 ```
-gedit /etc/hosts
+sudo gedit /etc/hosts
 ```
 
 
