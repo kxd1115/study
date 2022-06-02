@@ -100,3 +100,13 @@ select * from t1 where rownum <=5
 -- rownum 行计数器
 ```
 
+
+
+### 7. 去除前后空格
+
+```sql
+select ltrim(), rtrim() from t1
+-- ltrim 去除左空格
+-- rtrim 去除右空格
+```
+
