@@ -54,19 +54,27 @@ from (
 ))
 ```
 
-### 4. 列合并
+### 4. 列合并，字段拼接
 
 > oracle
 
 ```sql
 -- 将名字按照id合并，并以逗号分隔
 select id,wm_concat(',',name) as language from tmp_test group by id;
+
+
+-- 字段拼接 ||
+select id || name from t1
 ```
 
 > mysql
 
 ```sql
-select group_concat(*) from t1
+-- group_concat
+select id, group_concat(name,age) from t1 group by id
+
+-- concat()
+select concat(id, name) from t1
 ```
 
 
@@ -110,3 +118,33 @@ select ltrim(), rtrim() from t1
 -- rtrim 去除右空格
 ```
 
+
+
+### 8. Between
+
+- between ... and ... 包含指定的开始值和结束值
+
+
+
+### 9. and 和 or
+
+```sql
+如果语句中同时存在and和or，会优先处理and语句，因此需要使用小括号来限定条件范围（）
+```
+
+
+
+### 10. NOT
+
+```sql
+select * from t1 where not name='dennis'
+-- not也可以使用在需要过滤的列条件之前，此时和<>符号的功能一样
+```
+
+
+
+### 11. 通配符
+
+1. 最常用的通配符`%`
+
+- 使用通配符意味着需要耗费更长的查询时间
